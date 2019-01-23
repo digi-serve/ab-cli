@@ -1,0 +1,27 @@
+{
+  "name": "ab-cli",
+  "version": "0.0.1",
+  "description": "A command line helper for our AppBuilder development.",
+  "main": "index.js",
+  "repository": "https://github.com/Hiro-Nakamura/ab-cli",
+  "author": "Johnny Hausman",
+  "license": "MIT",
+  "private": false,
+  "bin": {
+    "appbuilder": "index.js"
+  },
+  "dependencies": {
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "5.12.1",
+    "eslint-config-prettier": "3.6.0",
+    "eslint-plugin-prettier": "3.0.1",
+    "prettier": "1.16.1"
+  },
+  "scripts": {
+    "test": "npm run lint && npm run custom-tests && echo 'Done'",
+    "lint": "eslint --fix --ignore-path .gitignore . && echo '✅ Your .js files look good.'",
+    "custom-tests": "echo '(no custom tests yet)'"
+  }
+}

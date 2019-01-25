@@ -1,0 +1,31 @@
+###################################################
+#   ╔═╗╔╦╗╦╔╦╗╔═╗╦═╗┌─┐┌─┐┌┐┌┌─┐┬┌─┐
+#   ║╣  ║║║ ║ ║ ║╠╦╝│  │ ││││├┤ ││ ┬
+#  o╚═╝═╩╝╩ ╩ ╚═╝╩╚═└─┘└─┘┘└┘└  ┴└─┘
+#
+# > Formatting conventions for your AppBuilder app.
+#
+# This file (`.editorconfig`) exists to help
+# maintain consistent formatting throughout the
+# files in our project.
+#
+# To review what each of these options mean, see:
+# http://editorconfig.org/
+#
+###################################################
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+quote_type = double
+max_line_length = 80
+
+### custom for markdown
+[*.md]
+# do not remove any whitespace characters preceding newline characters
+trim_trailing_whitespace = false

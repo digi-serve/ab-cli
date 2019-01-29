@@ -28,11 +28,10 @@ var commandArg = args._.shift();
 if (commandHash[commandArg]) {
   // Run the Command
   var command = commandHash[commandArg];
-  command.run(args, {});
+  command.run(args);
 } else {
   // display help screen with list of available commands:
   clear();
-  // console.log(args);
   console.log(`
 $ appbuilder ${chalk.red.bold(commandArg)} ${process.argv.slice(3).join(" ")}
 

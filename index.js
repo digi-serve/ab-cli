@@ -9,7 +9,7 @@ const utils = require(path.join(__dirname, "lib", "utils", "utils"));
 
 // process command line arguments
 let args = require("minimist")(process.argv.slice(2));
-console.log(args);
+// console.log(args);
 
 //// Load the command list:
 var listFiles = fs.readdirSync(path.join(__dirname, "lib"));
@@ -21,14 +21,31 @@ listFiles.forEach(file => {
     commandHash[command] = require(path.join(__dirname, "lib", command));
   }
 });
-console.log(commandHash);
+// console.log(commandHash);
 
 //// find if command exists
 var commandArg = args._.shift();
 if (commandHash[commandArg]) {
   // Run the Command
   var command = commandHash[commandArg];
-  command.run(args);
+  command
+    .run(args)
+    .then(() => {
+      console.log(`
+done.
+
+`);
+      process.exit(0);
+    })
+    .catch(err => {
+      // if the calling command already displayed an error message
+      // we don't need to display this here.
+      if (!err._handled) {
+        clear();
+        console.log(err);
+      }
+      process.exit(1);
+    });
 } else {
   // display help screen with list of available commands:
   clear();

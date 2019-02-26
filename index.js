@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const clear = require("clear");
 const chalk = require("chalk");
-
+const junk = require("junk");
 const utils = require(path.join(__dirname, "lib", "utils", "utils"));
 
 // process command line arguments
@@ -12,7 +12,7 @@ let args = require("minimist")(process.argv.slice(2));
 // console.log(args);
 
 //// Load the command list:
-var listFiles = fs.readdirSync(path.join(__dirname, "lib"));
+var listFiles = fs.readdirSync(path.join(__dirname, "lib")).filter(junk.not);
 var commandHash = {};
 listFiles.forEach(file => {
   var stat = fs.statSync(path.join(__dirname, "lib", file));

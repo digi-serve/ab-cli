@@ -17,6 +17,7 @@
     "cross-spawn": "^6.0.5",
     "ejs": "^2.6.1",
     "inquirer": "^6.2.1",
+    "junk": "^2.1.0",
     "minimist": "^1.2.0",
     "nanoid": "^2.0.1",
     "shelljs": "^0.8.3"

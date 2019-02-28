@@ -37,4 +37,5 @@ class <%= className %> extends ABService {
 }
 
 // Make an instance of our Service (which starts the App)
+/* eslint-disable no-unused-vars */
 var Service = new <%= className %>({ name: "<%= className %>" });

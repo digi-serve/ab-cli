@@ -13,6 +13,7 @@ const serviceResponder = new cote.Responder({ name: "<%= name %>" });
 const ABService = AB.service;
 
 const Handler = require(path.join(__dirname, "src", "handler.js"));
+Handler.init(config);
 
 //
 // <%= className %> Service
@@ -26,12 +27,12 @@ class <%= className %> extends ABService {
   // }
 
   shutdown() {
-    serviceResponder.off("<%= serviceKey %>", Handler);
+    serviceResponder.off("<%= serviceKey %>", Handler.fn);
     super.shutdown();
   }
 
   run() {
-    serviceResponder.on("<%= serviceKey %>", Handler);
+    serviceResponder.on("<%= serviceKey %>", Handler.fn);
   }
 }
 

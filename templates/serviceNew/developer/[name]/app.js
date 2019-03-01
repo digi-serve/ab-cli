@@ -13,7 +13,7 @@ const serviceResponder = new cote.Responder({ name: "<%= name %>" });
 const ABService = AB.service;
 
 const Handler = require(path.join(__dirname, "src", "handler.js"));
-Handler.init(config);
+Handler.init({ config });
 
 //
 // <%= className %> Service

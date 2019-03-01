@@ -1,18 +1,32 @@
 /**
  * handler
- * our email Request handler.
- * @param {obj} req
- *        the request object sent by the apiSails controller.
- * @param {fn} cb
- *        a node style callback(err, results) to send data when job is finished
+ * our Request handler.
  */
 var config;
 
 module.exports = {
-  init: function(conf) {
-    config = conf;
+  /**
+   * init
+   * setup our configuration & connections
+   * @param {obj} options
+   *        An object hash of important configuration data:
+   *        .config  {obj} the config settings for this service.
+   *        .DB {DBConnection} an instance of a live DB connection.
+   *        ...
+   */
+  init: function(options) {
+    options = options || {};
+    config = options.config || null;
   },
 
+  /**
+   * fn
+   * our Request handler.
+   * @param {obj} req
+   *        the request object sent by the apiSails controller.
+   * @param {fn} cb
+   *        a node style callback(err, results) to send data when job is finished
+   */
   fn: function handler(req, cb) {
     var err;
 
@@ -27,10 +41,10 @@ module.exports = {
     }
 
     // check if we are enabled
-    if (!config.enabled) {
+    if (!config.enable) {
       // we shouldn't be getting notification.email messages
       console.log(
-        "WARN: <%= name %> job received, but config.enabled is false."
+        "WARN: <%= name %> job received, but config.enable is false."
       );
       err = new Error("<%= serviceKey %> service is disabled.");
       err.code = "EDISABLED";

@@ -6,11 +6,6 @@
 // across your Sails app's code base.  These rules are checked against
 // automatically any time you run `npm test`.
 //
-// > An additional eslintrc override file is included in the `assets/` folder
-// > right out of the box.  This is specifically to allow for variations in acceptable
-// > global variables between front-end JavaScript code designed to run in the browser
-// > vs. backend code designed to run in a Node.js/Sails process.
-//
 // > Note: If you're using mocha, you'll want to add an extra override file to your
 // > `test/` folder so that eslint will tolerate mocha-specific globals like `before`
 // > and `describe`.
@@ -30,19 +25,25 @@ module.exports = {
     "ecmaVersion": 8
   },
 
-  // "parser": "babel-eslint",
-  extends: ["eslint:recommended", "prettier"], // extending recommended config and config derived from eslint-config-prettier
-  plugins: ["prettier"], // activating esling-plugin-prettier (--fix stuff)
+  // extending recommended config and config derived from eslint-config-prettier
+  extends: ["eslint:recommended", "prettier"],
+
+  // activating eslint-plugin-prettier (--fix stuff)
+  plugins: ["prettier"],
+
   rules: {
+
+    // customizing prettier rules (unfortunately not many of them are customizable)
     "prettier/prettier": [
-      // customizing prettier rules (unfortunately not many of them are customizable)
+
       "error",
       {
         // singleQuote: true,
         // trailingComma: "all"
       }
     ],
-    "no-console": 0, // "off",
-    // eqeqeq: ["error", "always"] // adding some custom ESLint rules
+
+    // eslint rule customization here:
+    "no-console": 0, // allow console.log() in our services
   }
 };

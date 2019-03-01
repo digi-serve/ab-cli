@@ -1,0 +1,17 @@
+
+
+  #[serviceName]: [description]
+  [serviceName]:
+    image: node
+    # ports:
+    #   - "9229:9229"
+    working_dir: /app
+    command: npm run dev
+    volumes:
+      - type: bind
+        source: ./developer/[name]
+        target: /app
+      - type: bind
+        source: ./config/local.js
+        target: /app/config/local.js
+  #/[serviceName]

@@ -1,0 +1,12 @@
+
+
+  # #[serviceName]: [description]
+  # [serviceName]:
+  #   image: skipdaddy/ab-[containerName]:<%=tag%>
+  #   # ports:
+  #   #   - "9229:9229"
+  #   volumes:
+  #     - type: bind
+  #       source: ./config/local.js
+  #       target: /app/config/local.js
+  # #/[serviceName]

@@ -1,5 +1,5 @@
 /**
- * handler
+ * <%= action %>
  * our Request handler.
  */
 var config;
@@ -23,7 +23,7 @@ module.exports = {
    * fn
    * our Request handler.
    * @param {obj} req
-   *        the request object sent by the apiSails controller.
+   *        the request object sent by the api_sails/api/controllers/<%= service %>/<%= action %>.
    * @param {fn} cb
    *        a node style callback(err, results) to send data when job is finished
    */
@@ -32,8 +32,8 @@ module.exports = {
 
     // if config not set, we have not be initialized properly.
     if (!config) {
-      console.log("WARN: <%= serviceKey %> handler not setup properly.");
-      err = new Error("<%= serviceKey %>: Missing config");
+      console.log("WARN: <%= key %> handler not setup properly.");
+      err = new Error("<%= key %>: Missing config");
       err.code = "EMISSINGCONFIG";
       err.req = req;
       cb(err);
@@ -44,9 +44,9 @@ module.exports = {
     if (!config.enable) {
       // we shouldn't be getting notification.email messages
       console.log(
-        "WARN: <%= name %> job received, but config.enable is false."
+        "WARN: <%= service %> job received, but config.enable is false."
       );
-      err = new Error("<%= serviceKey %> service is disabled.");
+      err = new Error("<%= key %> service is disabled.");
       err.code = "EDISABLED";
       cb(err);
       return;
@@ -56,7 +56,7 @@ module.exports = {
     /*
     if (!req.email) {
       var err2 = new Error(
-        ".email parameter required in <%= serviceKey %> service."
+        ".email parameter required in <%= key %> service."
       );
       err2.code = "EMISSINGPARAM";
       cb(err2);
@@ -74,5 +74,6 @@ module.exports = {
      cb(err, { status: "error", error: err });
 
      */
+    cb(null, { status: "success" });
   }
 };

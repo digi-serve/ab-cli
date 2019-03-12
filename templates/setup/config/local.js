@@ -13,6 +13,30 @@ module.exports = {
   // options or custom configuration specifically for your app (e.g. Stripe, Mailgun, etc.)
 
   /**
+   * datastores:
+   * Sails style DB connection settings
+   */
+  datastores: {
+    appbuilder: {
+      adapter: "sails-mysql",
+      host: "db",
+      port: 3306,
+      user: "root",
+      password: "root",
+      database: "appbuilder"
+    },
+    site: {
+      adapter: "sails-mysql",
+      host: "db",
+      port: 3306,
+      user: "root",
+      password: "root",
+      database: "site"
+    }
+  },
+  /* end datastores */
+
+  /**
    * bot_manager:
    * define the connections between our bot_manager and the host command
    * processor.

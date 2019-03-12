@@ -7,6 +7,7 @@
  * For more information, check out:
  * https://sailsjs.com/docs/concepts/configuration/the-local-js-file
  */
+var path = require("path");
 
 module.exports = {
   // Any configuration settings may be overridden below, whether it's built-in Sails
@@ -43,6 +44,17 @@ module.exports = {
    */
   bot_manager: {},
   /* end bot_manager */
+
+  /**
+   * file_processor
+   * our file manager
+   */
+  file_processor: {
+    enable: true,
+    basePath: path.sep + path.join("data", "file_processor"),
+    uploadPath: "tmp"
+  },
+  /* end file_processor */
 
   /**
    * notification_email

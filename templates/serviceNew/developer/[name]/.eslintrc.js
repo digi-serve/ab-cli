@@ -38,8 +38,8 @@ module.exports = {
 
       "error",
       {
-        // singleQuote: true,
-        // trailingComma: "all"
+        "tabWidth": 4,
+        "arrowParens": "always"
       }
     ],
 

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= appName %></title>
+        
+        <!--
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        -->
+        <!--
+        <meta http-equiv="Content-Security-Policy" content="default-src https://codepush.azurewebsites.net 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *" />
+        -->
+
+        <meta name="format-detection" content="telephone=no">
+        <meta charset="utf-8">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, minimal-ui, viewport-fit=cover">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">        
+        
+        <link href="css/modal.css" rel="stylesheet" />
+        <link href="css/framework7.ios.min.css" rel="stylesheet" />
+        <link href="css/framework7-icons.css" rel="stylesheet" />
+        <link href="css/material-icons.css" rel="stylesheet" />
+        
+        <link href="css/index.css" rel="stylesheet" />
+        <link href="css/fontawesome-all.min.css" rel="stylesheet" />
+        <link href="css/feedback.css" rel="stylesheet" />
+    </head>
+    
+    <body>
+
+        <!-- loading animation is pure CSS and will be active before any scripts load -->
+        <div id="loading-animation" class="xpage">
+            <div class="spacer"></div>
+            <div class="spinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>        
+        </div>
+        
+        <!-- global scripts -->
+        <script src="cordova.js"></script>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/es6-promise.js"></script>
+        <script src="js/fss.min.js"></script>
+        <script src="js/lodash.js"></script>
+        <script src="js/modal.js"></script>
+        <script src="js/moment.js"></script>
+        <script src="js/framework7.min.js"></script>
+        <script src="js/highcharts/highcharts.js"></script>
+        <script src="js/highcharts/highcharts-more.js"></script>
+        <script src="js/highcharts/modules/solid-gauge.js"></script>
+        
+        <!-- including webix to use DataCollections. -->
+        <script src="js/webix.js"></script>
+        
+        <!-- generated from webpack, entry point is index.js -->
+
+        <script src="js/<%= appName %>.js"></script>
+
+        
+    </body>
+</html>

@@ -9,7 +9,19 @@ module.exports = {
      * The unique id for this Mobile App.  Used to retrieve the AppPolicy
      * from the Public Server.
      */
-    maID: "SDC.id",
+    maID: "your.app.id",
+
+    /**
+     * networkType
+     * Which type of networking approach for connecting with the AppBuilder
+     * server data.
+     *
+     * Options: [ rest, relay ]
+     *  "rest" : directly connect to the AppBuilder Server using their
+     *           Restful api.
+     *  "relay" : communicate via an encrypted relay server
+     */
+    networkType: "relay",
 
     /**
      * urlCoreServer
@@ -21,7 +33,7 @@ module.exports = {
      * urlPublic Server
      * the complete connection url to access the Public Server.
      */
-    urlRelayServer: "localhost:1337",
+    urlRelayServer: "http://localhost:1337",
 
     /**
      * relayPollFrequencyNormal
@@ -35,5 +47,16 @@ module.exports = {
      * the amount of time to wait between polling requests when we ARE
      * expecting a response data. (like after a request)
      */
-    relayPollFrequencyExpecting: 1000 // 1000 * 5,  // in ms:  5 seconds
+    relayPollFrequencyExpecting: 1000, // 1000 * 5,  // in ms:  5 seconds
+
+    /**
+     * routes
+     * specific routes for certain services on our AppBuilder Server.
+     */
+    routes: {
+        /**
+         * feedback: the route that processes our AppFeedback transactions.
+         */
+        feedback: "/opstool-sdc/SDCReports/feedback"
+    }
 };

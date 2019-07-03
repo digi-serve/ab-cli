@@ -4,10 +4,10 @@
  */
 "use strict";
 
+import analytics from "../../resources/Analytics.js";
 import Page from "../../resources/Page.js";
 import { storage } from "../../resources/Storage.js";
-// import { t } from "../../resources/Translate.js";
-import analytics from "../../resources/Analytics.js";
+
 
 // For development only
 const disableEncryption = false;

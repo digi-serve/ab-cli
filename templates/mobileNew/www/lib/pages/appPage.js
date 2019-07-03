@@ -17,7 +17,7 @@ import notifications from "../resources/Notifications.js";
 import updater from '../resources/Updater.js';
 
 import log from '../resources/Log.js';
-// import appFeedback from '../appFeedback.js';
+import appFeedback from '../resources/AppFeedback.js';
 
 // import Shake from 'shake.js';
 // import camera from '../camera.js';

@@ -29,7 +29,6 @@ class AppFeedback extends EventEmitter {
                 labels: {
                     sendFeedback: "</t>Send Feedback</t>",
                     includeScreenshot: "<t>Include Screenshot</t>",
-                    send: "<t>send</t>",
                     cancel: "<t>cancel</t>",
                     //dragger: 'dragger',
                     //highlight: 'highlight',
@@ -59,7 +58,9 @@ class AppFeedback extends EventEmitter {
                             // AB.Comm.Relay.post() wants the data in object form
                             try {
                                 body = JSON.parse(body);
-                            } catch (e) {}
+                            } catch (e) {
+                                /* */
+                            }
                         }
 
                         // Add metadata
@@ -68,7 +69,9 @@ class AppFeedback extends EventEmitter {
                         body.route = "unknown";
                         try {
                             body.route = this.router.currentRoute.path;
-                        } catch (e) {}
+                        } catch (e) {
+                            /* */
+                        }
 
                         updater
                             .getPackageInfo()

@@ -43,7 +43,6 @@ class Feedback {
             labels: {
                 sendFeedback: "Send Feedback",
                 includeScreenshot: "Include Screenshot",
-                send: "send",
                 cancel: "cancel",
                 dragger: "dragger",
                 highlight: "highlight",
@@ -217,7 +216,7 @@ class Feedback {
                 this._state.dragged = true;
             }
         };
-        this._dragStop = ($event) => {
+        this._dragStop = (/* $event */) => {
             this._state.isDragging = false;
             if (this._state.dragged) {
                 this._drawOptionsPos.currTransform = `${
@@ -238,7 +237,7 @@ class Feedback {
                 };
             }
         };
-        this._drawStop = ($event) => {
+        this._drawStop = (/* $event */) => {
             if (this._state.canDraw) {
                 this._state.isDrawing = false;
                 if (
@@ -391,7 +390,7 @@ class Feedback {
                 this._paintArea(false);
             }
         };
-        this._addHighlightedElement = ($event) => {
+        this._addHighlightedElement = (/* $event */) => {
             if (this._highlightedArea) {
                 if (
                     Math.abs(this._highlightedArea.width) < 6 ||
@@ -499,7 +498,7 @@ class Feedback {
                     );
                 }
             })
-            .catch((_) => {
+            .catch((/* err */) => {
                 this._state.sending = false;
                 this._showError();
             });
@@ -796,7 +795,7 @@ class Feedback {
         removeButton.style.position = "absolute";
         removeButton.style.right = "0";
         removeButton.style.top = "0";
-        removeButton.addEventListener("click", ($event) => {
+        removeButton.addEventListener("click", (/* $event */) => {
             removeButton.parentNode.parentNode.removeChild(h);
             this._helpers.splice(
                 this._helpers.findIndex(
@@ -812,7 +811,7 @@ class Feedback {
             );
             this._redraw();
         });
-        h.addEventListener("mouseenter", ($event) => {
+        h.addEventListener("mouseenter", (/* $event */) => {
             if (this._state.canDraw && !this._state.isDrawing) {
                 h.appendChild(inner);
                 h.appendChild(removeButton);
@@ -851,7 +850,7 @@ class Feedback {
                 }
             }
         });
-        h.addEventListener("mouseleave", ($event) => {
+        h.addEventListener("mouseleave", (/* $event */) => {
             if (
                 this._state.canDraw &&
                 !this._state.isDrawing &&

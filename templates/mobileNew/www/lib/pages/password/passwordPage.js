@@ -8,7 +8,6 @@ import analytics from "../../resources/Analytics.js";
 import Page from "../../resources/Page.js";
 import { storage } from "../../resources/Storage.js";
 
-
 // For development only
 const disableEncryption = false;
 

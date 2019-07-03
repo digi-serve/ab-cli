@@ -18,8 +18,7 @@ module.exports = {
       "error",
       {
         "tabWidth": 4,
-        "arrowParens": "always",
-        "htmlWhitespaceSensitivity": "ignore"
+        "arrowParens": "always"
       }
     ],
     "no-console": "off",

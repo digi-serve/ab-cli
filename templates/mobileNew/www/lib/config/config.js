@@ -3,6 +3,7 @@
  * a single config file that compiles all the rest.
  * this file is the one imported by the rest of the application.
  */
+var appbuilder = require("./appbuilder.js");
 var codepush = require("./codepush.js");
 var sentryio = require("./sentryio.js");
 
@@ -13,6 +14,7 @@ var sentryio = require("./sentryio.js");
 var local = require("./local.js");
 
 var config = {
+    appbuilder: appbuilder,
     codepush: codepush,
     sentryio: sentryio
 };

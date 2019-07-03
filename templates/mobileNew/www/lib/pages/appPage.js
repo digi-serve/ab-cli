@@ -14,9 +14,9 @@ import account from "../resources/Account.js";
 import analytics from "../resources/Analytics.js";
 import { storage, Storage } from "../resources/Storage.js";
 import notifications from "../resources/Notifications.js";
-// import updater from '../updater.js';
+import updater from '../resources/Updater.js';
 
-// import log from '../log.js';
+import log from '../resources/Log.js';
 // import appFeedback from '../appFeedback.js';
 
 // import Shake from 'shake.js';

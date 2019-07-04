@@ -6,7 +6,7 @@ import analytics from "../resources/Analytics.js";
 
 import LoadingPage from "../pages/loadingPage.js";
 import PasswordPage from "../pages/password/passwordPage.js";
-import AppPage from "../pages/appPage.js";
+import AppPage from "../pages/app/appPage.js";
 
 // Initialize the top level pages.
 var pages = {

@@ -17,8 +17,8 @@ export default class PasswordPage extends Page {
     constructor() {
         super(
             "password-page",
-            "lib/app/templates/password.html",
-            "css/password.css"
+            "lib/pages/password/password.html",
+            "lib/pages/password/password.css"
         );
     }
 

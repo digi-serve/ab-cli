@@ -8,37 +8,34 @@
  */
 "use strict";
 
-import Page from "../resources/Page.js";
+import Page from "../../resources/Page.js";
 
-import account from "../resources/Account.js";
-import analytics from "../resources/Analytics.js";
-import { storage, Storage } from "../resources/Storage.js";
-import notifications from "../resources/Notifications.js";
-import updater from '../resources/Updater.js';
+import ABApplicationList from "../../applications/applications";
+import account from "../../resources/Account.js";
+import analytics from "../../resources/Analytics.js";
+import appFeedback from "../../resources/AppFeedback.js";
+import camera from "../../resources/Camera.js";
+import log from "../../resources/Log.js";
+import Network from "../../resources/Network.js";
+import notifications from "../../resources/Notifications.js";
+import qrPage from "../qrScanner/qrScanner.js";
+import Shake from "shake.js";
+import { storage, Storage } from "../../resources/Storage.js";
+import updater from "../../resources/Updater.js";
 
-import log from '../resources/Log.js';
-import appFeedback from '../resources/AppFeedback.js';
-
-// import Shake from 'shake.js';
-// import camera from '../camera.js';
 // // import moment from 'moment';
 
-// import qrPage from './qr-scanner.js';
 // import SettingsComponent from './components/settings.js';
-
-// import ABApplications from '../applications/applications';
-// import ABAppConfig from '../ABAppConfig.js';
-// const {parse, stringify} = require('flatted/cjs');
 
 export default class AppPage extends Page {
     /**
      */
     constructor() {
-        super("opstool-app", "lib/app/templates/app.html");
+        super("opstool-app", "lib/pages/app/app.html");
 
         // For console debugging only. Don't use these in the app like this.
-        window.appPage = this;
-        window.appPage.account = account;
+        // window.appPage = this;
+        // window.appPage.account = account;
 
         // Can shake device to activate Feedback tool
         this.shakeEvent = new Shake({ threshold: 15 });
@@ -53,7 +50,7 @@ export default class AppPage extends Page {
         this.storage = storage;
         this.templates = {};
         this.components = {};
-        this.applications = ABApplications;
+        this.applications = ABApplicationList;
         this.dataReady = $.Deferred();
         this.routerReady = $.Deferred();
 
@@ -67,14 +64,18 @@ export default class AppPage extends Page {
             this.updateOnLogin = true;
         }
 
-        AB.platform({
-            account: account,
-            storage: storage
-        });
+        // AB.platform({
+        //     account: account,
+        //     storage: storage
+        // });
 
         // Framework7 is the UI library
         this.app = new Framework7({
             theme: "ios",
+            toast: {
+                closeTimeout: 5000,
+                position: "top"
+            },
             statusbar: {
                 iosOverlaysWebView: false,
                 overlay: false
@@ -169,7 +170,7 @@ export default class AppPage extends Page {
             );
         }, 10000);
 
-        AB.Comm.Relay.once("error.badAuth", (err) => {
+        Network.once("error.badAuth", (/* err */) => {
             this.app.dialog.close();
             this.app.dialog.alert(
                 "<t>Make sure you have scanned the correct QR code for your account. If the problem persists, please contact an admin for help.</t>",
@@ -192,12 +193,12 @@ export default class AppPage extends Page {
 
                 // Initialize the secure relay.
                 // This relies on the account object from the previous step.
-                return AB.Comm.Relay.init(account);
+                return Network.init(account);
             })
             .then(() => {
                 // Are the AB Applications in the middle of being reset?
                 this.pendingApplicationReset = false;
-                AB.Comm.Relay.on("offline", () => {
+                Network.on("offline", () => {
                     // if we are interrupting a reset() sequence, warn the user:
                     if (this.pendingApplicationReset) {
                         this.closeRelayLoader();
@@ -207,14 +208,14 @@ export default class AppPage extends Page {
                         );
                     }
                 });
-                AB.Comm.Relay.on("online", () => {
+                Network.on("online", () => {
                     // if we had an interrupted reset() sequence, try it again:
                     if (this.pendingApplicationReset) {
                         this.forceApplicationReset();
                     }
                 });
 
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve /* , reject */) => {
                     if (account.authToken) {
                         resolve();
                     } else {
@@ -235,9 +236,9 @@ export default class AppPage extends Page {
                                             // now that we have the old authToken
                                             // try to init the Relay again:
                                             console.log(
-                                                "::: performing AB.Comm.Relay.init() "
+                                                "::: performing Network.init() "
                                             );
-                                            return AB.Comm.Relay.init();
+                                            return Network.init();
                                         })
                                         .then(() => {
                                             return oldDB.get("uuid");
@@ -246,7 +247,7 @@ export default class AppPage extends Page {
                                     throw new Error("authToken not found");
                                 }
                             })
-                            .then((value) => {
+                            .then((/* value */) => {
                                 // Import user ID
 
                                 // if (value) {
@@ -258,7 +259,7 @@ export default class AppPage extends Page {
                                 // }
                                 return oldDB.get("contacts");
                             })
-                            .then((oldContacts) => {
+                            .then((/* oldContacts */) => {
                                 // Ignore contacts
                                 // ...
 
@@ -320,12 +321,12 @@ export default class AppPage extends Page {
      */
     begin() {
         // on bootup, try to flush any network Queues
-        AB.Comm.Relay.queueFlush()
+        Network.queueFlush()
             .then(() => {
-                console.log("appPage:begin(): Relay Queue flushed.");
+                console.log("appPage:begin(): Network Queue flushed.");
             })
             .catch((err) => {
-                analytics.log("appPage:begin(): unable to flush Relay Queue");
+                analytics.log("appPage:begin(): unable to flush Network Queue");
                 analytics.logError(err);
             });
 
@@ -350,6 +351,7 @@ export default class AppPage extends Page {
 
         // Handle deep links
         if (window.universalLinks) {
+            /* eslint-disable-next-line no-undef */
             universalLinks.subscribe(null, (eventData) => {
                 console.log("Deep link");
                 console.log("Data:", eventData);
@@ -537,7 +539,7 @@ export default class AppPage extends Page {
         //// OneSignal
         // Notification received while using app
         notifications.on("received", (msg) => {
-            var data = msg.data || {};
+            // var data = msg.data || {};
             //if (!data.type) {
             // This is just a plain message for displaying.
             this.app.dialog.alert(msg.body, msg.title);
@@ -547,10 +549,10 @@ export default class AppPage extends Page {
             /*
             // Notification about an appointment
             this.app.dialog.create({
-                title: msg.title, 
-                text: msg.body, 
+                title: msg.title,
+                text: msg.body,
                 buttons: [
-                    { 
+                    {
                         text: '<t>Show me</t>',
                         onClick: () => {
                             this.components['coaching'].handleAppointmentNotification(data.type, data.contact, data.session);
@@ -566,11 +568,10 @@ export default class AppPage extends Page {
             */
         });
         // Notification received while outside of app.
-        notifications.on("opened", (msg) => {
-            var data = msg.data || {};
+        notifications.on("opened", (/* msg */) => {
+            // var data = msg.data || {};
             // User had to read the notification in order to open the app,
             // so no point displaying it again.
-
             /*
             if (data.type) {
                 this.components['coaching'].handleAppointmentNotification(data.type, data.contact, data.session);
@@ -649,7 +650,7 @@ export default class AppPage extends Page {
 
         Promise.resolve()
             .then(() => {
-                return AB.Comm.Relay.getTokens();
+                return Network.getTokens();
             })
             .then((tokens = {}) => {
                 this.relayJobsTotal = Object.keys(tokens).length;
@@ -691,7 +692,7 @@ export default class AppPage extends Page {
         this.relayLoaderDialog.open();
         this.app.progressbar.set("#relay-loader .progressbar", 0, 0);
 
-        AB.Comm.Relay.on("job.*", this._relayObserver);
+        Network.on("job.*", this._relayObserver);
     }
 
     /**
@@ -701,7 +702,7 @@ export default class AppPage extends Page {
         if (this.relayLoaderDialog) {
             this.relayLoaderDialog.close();
         }
-        AB.Comm.Relay.off("job.*", this._relayObserver);
+        Network.off("job.*", this._relayObserver);
     }
 
     /**
@@ -775,7 +776,7 @@ export default class AppPage extends Page {
         this.appResetOK = true;
 
         console.log("::: forceApplicationReset(): Relay.init().");
-        return AB.Comm.Relay.init()
+        return Network.init()
             .then(() => {
                 var allInits = [];
 

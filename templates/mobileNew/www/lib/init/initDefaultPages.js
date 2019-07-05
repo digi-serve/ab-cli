@@ -59,5 +59,10 @@ export default {
         });
 
         return Promise.resolve(); // nothing async, so just return
+    },
+    show: (pageKey) => {
+        if (pages[pageKey]) {
+            pages[pageKey].show();
+        }
     }
 };

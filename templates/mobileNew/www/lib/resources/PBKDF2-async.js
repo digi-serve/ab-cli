@@ -213,7 +213,7 @@ C.PBKDF2async = function(password, salt, cfg) {
     if (window.Worker) {
         // Synchronously calculate result in a separate thread
         return new Promise((resolve, reject) => {
-            var pbkdf2Worker = new Worker("pbkdf2-worker-bundle.js");
+            var pbkdf2Worker = new Worker("js/pbkdf2-worker-bundle.js");
             pbkdf2Worker.onmessage = function(e) {
                 var key = C.enc.Hex.parse(e.data);
                 resolve(key);

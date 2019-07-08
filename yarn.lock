@@ -678,6 +678,11 @@ regexpp@^2.0.1:
   resolved "https://registry.yarnpkg.com/regexpp/-/regexpp-2.0.1.tgz#8d19d31cf632482b589049f8281f93dbcba4d07f"
   integrity sha512-lv0M6+TkDVniA3aD1Eg0DVpfU/booSu7Eev3TDO/mZKHBfVjgCGTV4t4buppESEYDtkArYFOxTJWv6S5C+iaNw==
 
+remove-trailing-spaces@^1.0.0:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/remove-trailing-spaces/-/remove-trailing-spaces-1.0.7.tgz#491f04e11d98880714d12429b0d0938cbe030ae6"
+  integrity sha512-wjM17CJ2kk0SgoGyJ7ZMzRRCuTq+V8YhMwpZ5XEWX0uaked2OUq6utvHXGNBQrfkUzUUABFMyxlKn+85hMv4dg==
+
 resolve-from@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-4.0.0.tgz#4abcd852ad32dd7baabfe9b40e00a36db5f392e6"
@@ -865,6 +870,13 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
+
+write-file-trim@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/write-file-trim/-/write-file-trim-1.0.8.tgz#8b8bdf1c7f278cefce1763cfae840696bebfad7d"
+  integrity sha512-TCGbcdvA6OX/k2Oe4eDRPZDX/gOPOPiNiaPHTT1JpAzc2ctrneB5whAmJwCGF6/wi467o4zhq/xqC9iH1yDhpQ==
+  dependencies:
+    remove-trailing-spaces "^1.0.0"
 
 write@^0.2.1:
   version "0.2.1"

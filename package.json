@@ -26,7 +26,8 @@
     "eslint": "5.12.1",
     "eslint-config-prettier": "3.6.0",
     "eslint-plugin-prettier": "3.0.1",
-    "prettier": "1.16.1"
+    "prettier": "1.16.1",
+    "write-file-trim": "^1.0.8"
   },
   "scripts": {
     "test": "npm run lint && npm run custom-tests && echo 'Done'",

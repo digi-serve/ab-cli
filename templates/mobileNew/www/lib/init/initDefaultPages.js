@@ -61,6 +61,17 @@ export default {
         return Promise.resolve(); // nothing async, so just return
     },
     show: (pageKey) => {
+        switch (pageKey) {
+            case "app":
+                // making sure other objects respond to any password signals:
+                // simulate the password process:
+                pages.password.emit("loading");
+                pages.password.emit("loadingDone");
+                pages.password.emit("passwordReady");
+                pages.password.emit("passwordDone");
+                break;
+        }
+
         if (pages[pageKey]) {
             pages[pageKey].show();
         }

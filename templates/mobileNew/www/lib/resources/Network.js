@@ -2,6 +2,7 @@
  * Network.js
  * A network manager for interfacing with our AppBuilder server.
  */
+import AB from "../AB/AB";
 import EventEmitter from "eventemitter2";
 
 // pages that use :

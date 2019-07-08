@@ -1,0 +1,389 @@
+<!-- Framework7 component template -->
+<template>
+    <div class="page" id="settings-page">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+                <a href="#" class="link icon-only panel-open" data-panel="left">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+            <div class="sliding title">
+                <t>Settings</t>
+            </div>
+            <div class="right">
+                <a href="#" class="link icon-only panel-open" data-panel="right">
+                    <i class="fa fa-bug"></i>
+                </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-content">
+
+            <div class="block-title"></div>
+
+            <div class="card settings-qr-card" id="qr-scan-warning">
+                <div class="card-header bg-color-gray text-color-white" translate=1>
+                    Permissions Needed
+                </div>
+                <div class="card-content card-content-padding" translate=1>
+                    Please enable camera permissions in the system
+                    settings first
+                </div>
+                <div class="card-footer">
+                    <button id="qr-scan-settings" class="button" translate=1>System Settings</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-color-gray text-color-white" translate=1>
+                    QR Code Scanner
+                </div>
+                <div class="card-content card-content-padding">
+                    <t>Scan a QR code from the secure website to begin setup</t><br/>
+                    <br/>
+                    <button id="qr-scan" class="button button-big color-purple"><i class="fa fa-qrcode"></i> <t>Scan QR code</t></button>
+                </div>
+            </div>
+
+            <div class="card settings-update-card" id="update-progress">
+                <div class="card-header bg-color-gray text-color-white" translate=1>
+                    An update is in progress...
+                </div>
+                <div class="card-footer">
+                    <div class="progressbar" data-progress="1"></div>
+                </div>
+            </div>
+
+            <div class="card settings-update-card" id="update-installing">
+                <div class="card-header bg-color-gray text-color-white" translate=1>
+                    Installing...
+                </div>
+                <div class="card-footer">
+                    <div class="progressbar-infinite"></div>
+                </div>
+            </div>
+
+            <div class="card settings-update-card" id="update-ready">
+                <div class="card-header bg-color-gray text-color-white" translate=1>
+                    Update Ready
+                </div>
+                <div class="card-content card-content-padding" translate=1>
+                    An update is ready and will take effect when you
+                    restart the app.
+                </div>
+                <div class="card-footer">
+                    <button id="restart-app" class="button" translate=1>Restart</button>
+                </div>
+            </div>
+
+            <div class="card" id="update-info">
+                <div class="card-header bg-color-gray text-color-white" translate=1>
+                    App Info
+                </div>
+                <div class="card-content card-content-padding">
+                    <!-- see update-info.html -->
+                </div>
+            </div>
+
+            <div class="card" id="sync-data"
+                {{#unless hasAuthToken}}
+                    style='display: none;'
+                {{/unless}}
+            >
+                <div class="card-header bg-color-gray text-color-white" translate=1>
+                    Update profile and application data
+                </div>
+                <div class="card-content card-content-padding">
+                    <t>Tap below to fetch your current HRIS data and refresh application data.</t><br/>
+                    <br/>
+                    <label class="checkbox color-purple" style="line-height: 23px;"><input id="updateOnLoginCheckbox" type="checkbox"><i class="icon-checkbox" style="float: left; margin-right: 10px;"></i> <t>Update data each time I log into the app.</t></label>
+                    <br/>
+                    <br/>
+                    <button id="sync-with-server" class="button button-big color-purple"><i class="fa fa-sync"></i> <t>Update Now</t></button>
+                </div>
+            </div>
+
+            <div class="card" id="remote-debug">
+                <div class="card-header bg-color-gray text-color-white" translate=1>
+                    Debug Settings
+                </div>
+                <div class="card-content card-content-padding">
+                    <label class="checkbox color-purple" style="line-height: 23px;">
+                        <input id="enableRemoteLogging" type="checkbox"
+                            {{#if logStatus.remoteDebug}}
+                                checked="1"
+                            {{/if}}
+                        >
+                        <i class="icon-checkbox" style="float: left; margin-right: 10px;"></i>
+                        <t>Enable remote logging</t>
+                    </label>
+                    <br/>
+                    <div id="customServer" style="display: none; margin-top: 5px;">
+                        <label class="checkbox color-purple" style="line-height: 23px;">
+                            <input id="customServerCheckbox" type="checkbox"
+                                {{#if logStatus.remoteDebugCustom}}
+                                    checked="1"
+                                {{/if}}
+                            >
+                            <i class="icon-checkbox" style="float: left; margin-right: 10px;"></i>
+                            <t>Custom server settings</t>
+                        </label>
+                        <br/>
+                        <div id="customServerSettings" class="list inline-labels no-hairlines-md"
+                            {{#unless logStatus.remoteDebugCustom}}
+                                style="display: none;"
+                            {{/unless}}
+                        >
+                            <ul>
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label"><t>IP Address:</t></div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" name="host" placeholder="Default IP" value="{{logStatus.remoteHost}}">
+                                            <span class="input-clear-button"></span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label"><t>Port:</t></div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" name="port" placeholder="Default port" value="{{logStatus.remotePort}}">
+                                            <span class="input-clear-button"></span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br/>
+                    <button id="btnEnableRemoteLogging" class="button button-big color-purple"><i class="fa fa-terminal"></i> <t>Start Now</t></button>
+                    <button id="btnDisableRemoteLogging" style="display:none;" class="button button-big color-purple"><i class="fa fa-terminal"></i> <t>Stop Now</t></button>
+                </div>
+            </div>
+
+            <div class="card" id="vpn-data">
+            <!-- see vpn-data.html -->
+            </div>
+
+        </div>
+    </div>
+</template>
+
+<!-- Framework7 component script -->
+<script>
+    /**
+     * The Settings page presents a view of several of the app's inner systems.
+     * These systems are active right from the time the app is launched.
+     * This page is only active when the user navigates to it. In contrast,
+     * the settings component object is instantiated once at the start of the
+     * app, and persists between multiple visits in and out of this page.
+     *
+     * Things on this page that may be affected by events that occur while
+     * the page is not active should be handled with the help of the settings
+     * component object rather than purely here on this page's script.
+     */
+
+    return {
+        data: function() {
+            // See lib/app/controllers/appPage.js
+            var appPage = this.$root.appPage;
+
+            // See lib/app/controllers/components/settings.js
+            var settings = this.$root.getComponent('settings');
+
+            // See lib/app/log.js
+            var log = this.$root.log;
+
+            return {
+                logStatus: log.getStatus(),
+                hasAuthToken: Boolean(this.$root.account.authToken),
+            }
+        },
+        on: {
+            pageBeforeIn: function() {
+                var log = this.$root.log; // see lib/app/log.js
+
+                this.$('.view-main .navbar').attr('class', 'navbar bg-color-purple text-color-white color-theme-white');
+                //this.$app.statusbar.setBackgroundColor("#9c27b0");
+                //this.$app.statusbar.setIosTextColor("#ffffff");
+
+                var logStatus = log.getStatus();
+                if (logStatus.remoteDebug) {
+                    this.$('#enableRemoteLogging').prop('checked', true);
+                    $('#customServer').show();
+                    if (logStatus.remoteDebugCustom) {
+                        $('#customServerSettings').show();
+                        this.$('#customServerCheckbox').prop('checked', true);
+                        this.$('#customServerSettings [name=host]').val(logStatus.remoteHost);
+                        this.$('#customServerSettings [name=port]').val(logStatus.remotePort);
+                    }
+                }
+                if (logStatus.liveDebug) {
+                    $('#btnEnableRemoteLogging').hide();
+                    $('#btnDisableRemoteLogging').show();
+                }
+
+            },
+
+            pageInit: function() {
+                var appPage = this.$root.appPage;
+
+                var updater = this.$root.updater;
+                var analytics = this.$root.analytics;
+                var log = this.$root.log; // see lib/app/log.js
+
+                var self = this;
+                var settings = this.$root.getComponent('settings');
+
+                // Turn on Logging
+                $('#btnEnableRemoteLogging').on('click', () =>{
+                    var isEnabled = $('#enableRemoteLogging').prop("checked");
+                    if (isEnabled) {
+                        var isEnabledCustom = $('#customServerCheckbox').prop("checked");
+                        if (isEnabledCustom) {
+                            var host = $('#customServerSettings [name=host]').val();
+                            var port = $('#customServerSettings [name=port]').val();
+                            // Send remote logs to custom IP and Port
+                            log.enableRemoteLogging(host, port);
+                        } else {
+                            // Send remote logs to default server
+                            log.enableRemoteLogging();
+                        }
+                    } else {
+                        // Only show device logs
+                        log.enableDeviceLogging();
+                    }
+                    // Toggle buttons for on/off
+                    $('#btnEnableRemoteLogging').hide();
+                    $('#btnDisableRemoteLogging').show();
+                })
+
+                // Turn off logging
+                $('#btnDisableRemoteLogging').on('click', () =>{
+                    log.disableRemoteLogging();
+                    // Toggle buttons for on/off
+                    $('#btnEnableRemoteLogging').show();
+                    $('#btnDisableRemoteLogging').hide();
+                })
+
+                // when remote logging is checked check to see if we should turn off or on remote logging
+                $('#enableRemoteLogging').on('change', () =>{
+                    var isEnabledCustom = $('#enableRemoteLogging').prop("checked");
+                    if (isEnabledCustom) {
+                        $('#customServer').show();
+                    } else {
+                        $('#customServer').hide();
+                    }
+                    // if debugging is already enabled auto fire the start operation to enable the new settings
+                    if ($('#btnDisableRemoteLogging').is(":visible")) {
+                        $('#btnEnableRemoteLogging').trigger("click");
+                    }
+                });
+
+                // when custom settings is checked reveal or hide advanced settings
+                $('#customServerCheckbox').on('change', () =>{
+                    var isEnabledCustom = $('#customServerCheckbox').prop("checked");
+                    if (isEnabledCustom) {
+                        $('#customServerSettings').show();
+                    } else {
+                        $('#customServerSettings').hide();
+                    }
+                    // if debugging is already enabled auto fire the start operation to enable the new settings
+                    if ($('#btnDisableRemoteLogging').is(":visible")) {
+                        $('#btnEnableRemoteLogging').trigger("click");
+                    }
+                });
+
+                // if debugging is enabled update the settings when custom remote debugging field is blurred
+                $('#customServerSettings input[type=text]').on('blur', () =>{
+                    if ($('#btnDisableRemoteLogging').is(":visible")) {
+                        $('#btnEnableRemoteLogging').trigger("click");
+                    }
+                });
+
+
+                // MS AppCenter CodePush
+                $('#restart-app').on('click', () => {
+                    updater.restart();
+                });
+                if (settings.isUpdateReady) {
+                    $('#update-ready').show();
+                }
+                updater.getPackageInfo();
+                settings.renderPackageInfo();
+
+                // var events = this.$root.getMobileApp('EVENTS');
+                // var hris = this.$root.getMobileApp('HRIS');
+                var syncing;
+
+                // Sync with server
+                $('#sync-with-server').on('click', () => {
+
+                    if (!AB.Comm.Relay.isNetworkConnected()) {
+                        self.$app.dialog.alert(
+                            '<t>Make sure you are connected to the Internet before trying to update your data.</t>',
+                            '<t>No Network Detected.</t>'
+                        )
+                        return;
+                    }
+
+                    var continueSync = self.$app.dialog.confirm(
+                        '<t>This will fetch the latest data from the server without affecting any locally changed data. Continue?</t>',
+                        '<t>Update Data</t>',
+                        () => {
+                            appPage.fetchApplicationData()
+                        }
+                    );
+                });
+
+
+                // QR code
+                $('#qr-scan-settings').on('click', () => {
+                    // Open device settings for user to grant
+                    // camera permissions to this app.
+                    QRScanner.openSettings();
+                });
+                $('#qr-scan').on('click', () => {
+                    // Open the QR Code Scanner page.
+                    settings.showQrPage();
+                });
+
+
+                // Show warning if camera access denied
+                // but not before the first attempt
+                if (settings.wasQrScanAttempted()) {
+                    QRScanner.getStatus((status) => {
+                        settings.qrScannerStatus = status;
+                        if (!status.authorized && status.canOpenSettings) {
+                            $('#qr-scan-warning').show();
+                        }
+                    });
+                }
+
+                if (this.$root.appPage.authToken) {
+                    $('#sync-data').show();
+                }
+                $("#updateOnLoginCheckbox").prop( "checked", this.$root.appPage.updateOnLogin );
+                var self = this;
+                $('#updateOnLoginCheckbox').change(
+                    function(){
+                        if ($(this).is(':checked')) {
+                            localStorage.setItem('updateOnLogin', "true");
+                            self.$root.appPage.updateOnLogin = true;
+                        } else {
+                            localStorage.setItem('updateOnLogin', "false");
+                            self.$root.appPage.updateOnLogin = false;
+                        }
+                    });
+
+            }
+        },
+
+        pageBeforeRemove: function() {
+
+        }
+    };
+</script>

@@ -1,0 +1,68 @@
+<!-- framework7 component template -->
+<template>
+    <div class="page">
+        <div class="navbar theme-dark">
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back" id="coach-contact-back">
+                      <i class="icon icon-back"></i>
+                    </a>
+                </div>
+                <div class="title"><i class="fa fa-lock"></i> Lock App</div>
+            </div>
+        </div>
+        <div class="page-content" style="padding-top: 50%; text-align: center">
+            <div><t>Locking app in</t> <span id="seconds-until-lock">{{secondsRemaining}}</span></div>
+            <div style="margin-top: 2em;">
+                <a href="#" translate=1 id="lock-app-now">Lock now</a>
+            </div>
+        </div>
+    </div>
+
+</template>
+
+
+<!-- framework7 component script -->
+<script>
+    var interval = null;
+    var secondsRemaining = 5;
+
+    function lockNow() {
+        $('#lock-app-now').hide();
+        window.location.reload();
+        clearInterval(interval);
+    }
+
+    return {
+
+        data: function() {
+            return {
+                secondsRemaining: secondsRemaining,
+            }
+        },
+
+        on: {
+            pageInit: function() {
+                $('#lock-app-now').on('click', lockNow);
+            },
+
+            pageBeforeIn: function() {
+                interval = setInterval(() => {
+                    secondsRemaining -= 1;
+                    if (secondsRemaining < 1) {
+                        lockNow();
+                    } else {
+                        $('#seconds-until-lock').text(secondsRemaining);
+                    }
+                }, 1000);
+
+            },
+
+            // Cancel lock timer if user navigates away
+            pageBeforeOut: function() {
+                clearInterval(interval);
+            }
+
+        }
+    }
+</script>

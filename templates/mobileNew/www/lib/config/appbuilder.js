@@ -24,18 +24,6 @@ module.exports = {
     networkType: "relay",
 
     /**
-     * urlCoreServer
-     * the complete connection url to access our Core Server
-     */
-    urlCoreServer: "http://localhost:1337",
-
-    /**
-     * urlPublic Server
-     * the complete connection url to access the Public Server.
-     */
-    urlRelayServer: "http://localhost:1337",
-
-    /**
      * relayPollFrequencyNormal
      * the amount of time to wait between polling requests when we are NOT
      * expecting any data. (like when we have not made any requests)
@@ -58,5 +46,17 @@ module.exports = {
          * feedback: the route that processes our AppFeedback transactions.
          */
         feedback: "/opstool-sdc/SDCReports/feedback"
-    }
+    },
+
+    /**
+     * urlCoreServer
+     * the complete connection url to access our Core Server
+     */
+    urlCoreServer: "http://localhost:1337",
+
+    /**
+     * urlPublic Server
+     * the complete connection url to access the Public Server.
+     */
+    urlRelayServer: "http://localhost:1337"
 };

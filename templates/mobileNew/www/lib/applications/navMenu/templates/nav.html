@@ -1,0 +1,136 @@
+<!-- framework7 component template -->
+<template>
+    <div class="page">
+        <div class="navbar theme-dark">
+            <div class="navbar-inner sliding">
+                <div class="title">conneXted</div>
+                <div class="right">
+                    <a class="link icon-only color-white" href="/nav/lock/">
+                        <i class="fa fa-lock"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+<!--
+            <div {{#if user.ren_surname}}{{else}} style="display:none;" {{/if}} class="demo-card-header-pic showIfUser">
+                <div style="background-image:url(img/profile_bg.png)" valign="bottom" class="card-header profile_container">
+                    <a href="/hris/" data-view=".view-main" class="panel-close text-color-white">
+                        <div style="" class="avatar color-{{user.gender_id}}" style="background: #CCC;">
+                            {{#if user.ren_surname}}{{user.ren_preferredname.substring(0,1)}}{{user.ren_surname.substring(0,1)}}{{/if}}
+                        </div>
+                        <span id="userName">{{#if user.ren_surname}}{{user.ren_preferredname}} {{user.ren_surname}}{{/if}}</span><br />
+                        <small>
+                            <i class="icon fas fa-fw fa-cog"></i> <t>view profile</t>
+                        </small>
+                    </a>
+                </div>
+            </div>
+-->
+            <div class="list" style="margin: 0;">
+                <ul>
+                    <li>
+                        <a href="/coaching/" data-view=".view-main" class="panel-close item-link item-content emphasis color-teal">
+                            <div class="item-inner">
+                                <div class="item-title"><span translate=1 class="text-color-white">my</span><t>development</t></div>
+                            </div>
+                        </a>
+                    </li>
+<!--
+                    <li {{#if user.ren_surname}}{{else}} style="display:none;" {{/if}} class="showIfUser">
+                        <a href="/events/" data-view=".view-main" class="panel-close item-link item-content emphasis color-deeporange">
+                            <div class="item-inner">
+                                <div class="item-title"><span translate=1 class="text-color-white">my</span><t>events</t></div>
+                            </div>
+                        </a>
+                    </li>
+-->
+                    <!-- <li>
+                        <a href="/goals/" data-view=".view-left" class="item-link item-content emphasis color-amber">
+                            <div class="item-inner">
+                                <div class="item-title"><span translate=1 class="text-color-white">my</span><t>goals</t></div>
+                            </div>
+                        </a>
+                    </li> -->
+                    <li>
+                        <a href="/settings/" data-view=".view-main" class="panel-close item-link item-content emphasis color-purple">
+                            <div class="item-inner">
+                                <div class="item-title"><span translate=1 class="text-color-white">my</span><t>settings</t></div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- <button id="send-feedback" class="button button-fill bg-color-gray text-color-white" style="border-radius: 0; position: absolute; bottom: 0;">
+                <i class="fas fa-comment"></i> <t>Submit Feedback</t>
+            </button>             -->
+        </div>
+    </div>
+
+</template>
+
+
+<!-- framework7 component script -->
+<script>
+var hris;
+//// Transition:
+var getMyPersonData = () =>{
+    return {
+                ren_preferredname: 'skippy',
+                ren_surname: "hausman",
+                gender_id: 3
+            }
+}
+var hrisReadyHandler = function() {
+//// Transition
+    // var user = hris.getMyPersonData();
+    user = getMyPersonData();
+
+    console.log("user:", user);
+    if (user.ren_preferredname) {
+        $(".showIfUser").css("display", "");
+        $("#userName").html(user.ren_preferredname + " " +user.ren_surname);
+        $(".avatar").html(user.ren_preferredname.substring(0,1) + user.ren_surname.substring(0,1));
+        $(".avatar").addClass("color-"+user.gender_id);
+    }
+}
+
+return {
+    data: function() {
+//// Transition:
+        // hris = this.$root.getMobileApp('HRIS');
+
+        return {
+            // user: hris.getMyPersonData(),
+            user:getMyPersonData()
+
+        }
+    },
+
+    on: {
+        pageInit: function() {
+            var appPage = this.$root.appPage;
+            // hris = this.$root.getMobileApp('HRIS');
+
+            $('button#send-feedback').on('click', () => {
+                this.$app.panel.close('left');
+                appPage.activateFeedback();
+            });
+
+//// Transition
+            // hris.on('dataReady', hrisReadyHandler);
+hrisReadyHandler();
+        },
+
+        pageAfterIn: function() {
+//console.log("this.$root.account.authToken -> ", this.$root.account.authToken);
+        },
+
+        pageBeforeRemove: function() {
+//// Transition
+            // hris.off('dataReady', hrisReadyHandler);
+        }
+    }
+}
+</script>

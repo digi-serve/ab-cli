@@ -10,10 +10,12 @@ import analytics from "./Analytics.js";
 import EventEmitter from "eventemitter2";
 import CryptoJS from "crypto-js";
 import Lock from "./Lock.js";
+import Log from "./Log.js";
 import PBKDF2async from "./PBKDF2-async.js";
 
-// For development only
-const disableEncryption = false;
+var config = require("../config/config.js");
+
+const disableEncryption = !config.platform.encryptedStorage; // false;
 
 class Storage extends EventEmitter {
     constructor(name = "sdc", label = "SDC", version = "1.0", sizeInMB = 2) {
@@ -23,9 +25,9 @@ class Storage extends EventEmitter {
         this.salt = null;
 
         this._queueLocks = {
+            // a constant reference to available Synchronization Locks.
             /* key : Lock() */
         };
-        // a constant reference to available Synchronization Locks.
 
         try {
             // this.db is a webSQL implementation ()
@@ -44,14 +46,14 @@ class Storage extends EventEmitter {
                     [],
                     (/* tx, result */) => {},
                     (tx, err) => {
-                        console.log("DB error", err);
-                        console.log("tx:", tx);
+                        Log("DB error", err);
+                        Log("tx:", tx);
                         analytics.logError(err);
                     }
                 );
             });
         } catch (err) {
-            console.log(err);
+            Log(err);
             alert(
                 "Error initializing the storage system:\n" +
                     (err.message || "") +
@@ -134,7 +136,7 @@ class Storage extends EventEmitter {
                     resolve();
                 })
                 .catch((err) => {
-                    console.log("Password error", err);
+                    Log("Password error", err);
                     analytics.logError(err);
                     reject(err);
                 });
@@ -258,8 +260,8 @@ class Storage extends EventEmitter {
                         resolve();
                     },
                     (tx, err) => {
-                        console.log("DB error", err);
-                        console.log("tx:", tx);
+                        Log("DB error", err);
+                        Log("tx:", tx);
                         reject(err);
                     }
                 );
@@ -318,7 +320,7 @@ class Storage extends EventEmitter {
                                     if (options.resetAppOnFailure) {
                                         document.location.reload();
                                     } else {
-                                        console.log("Incorrect password");
+                                        Log("Incorrect password");
                                         reject(new Error("Incorrect password"));
                                     }
                                     return;
@@ -328,7 +330,7 @@ class Storage extends EventEmitter {
                                 if (options.resetAppOnFailure) {
                                     document.location.reload();
                                 } else {
-                                    console.log("Missing password");
+                                    Log("Missing password");
                                     reject(new Error("Missing password"));
                                 }
                                 return;
@@ -339,7 +341,7 @@ class Storage extends EventEmitter {
                                 try {
                                     value = JSON.parse(value);
                                 } catch (err) {
-                                    console.log("Bad saved data?", key, value);
+                                    Log("Bad saved data?", key, value);
                                     value = null;
                                 }
                             }
@@ -348,7 +350,7 @@ class Storage extends EventEmitter {
                         }
                     },
                     (tx, err) => {
-                        console.log("DB error", err);
+                        Log("DB error", err);
                         analytics.logError(err);
                         reject(err);
                     }
@@ -370,8 +372,8 @@ class Storage extends EventEmitter {
                         resolve();
                     },
                     (tx, err) => {
-                        console.log("DB error", err);
-                        console.log("tx:", tx);
+                        Log("DB error", err);
+                        Log("tx:", tx);
                         analytics.logError(err);
                         reject();
                     }
@@ -392,8 +394,8 @@ class Storage extends EventEmitter {
                         resolve();
                     },
                     (tx, err) => {
-                        console.log("DB error", err);
-                        console.log("tx:", tx);
+                        Log("DB error", err);
+                        Log("tx:", tx);
                         analytics.logError(err);
                         reject(err);
                     }

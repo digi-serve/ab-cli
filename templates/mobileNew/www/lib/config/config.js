@@ -5,6 +5,7 @@
  */
 var appbuilder = require("./appbuilder.js");
 var codepush = require("./codepush.js");
+var platform = require("./platform.js");
 var sentryio = require("./sentryio.js");
 
 // local.js
@@ -16,6 +17,7 @@ var local = require("./local.js");
 var config = {
     appbuilder: appbuilder,
     codepush: codepush,
+    platform: platform,
     sentryio: sentryio
 };
 

@@ -1,0 +1,110 @@
+<!-- Framework7 component template -->
+<template>
+  <div class="page">
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="link icon-only panel-open" data-panel="left">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+        <div class="sliding title">
+            <t>conneXted</t>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+        <div class="block">
+            <center><img style="width: 100%; max-width: 400px;" src="img/connexted_splash.png"/></center>
+            <div style="width: 42px; height: 42px; margin: -40px auto 0; display: block;" class="preloader preloader-big"></div>
+            <p style="font-size: 18px; text-align: center;" translate=1>Welcome to the conneXted app. If this is your first time to log in please wait while we connect your staff account.</p>
+        </div>
+    </div>
+
+  </div>
+</template>
+
+<!-- Framework7 component script -->
+<script>
+    return {
+        data: function() {
+            return {
+            };
+        },
+
+        on: {
+            pageBeforeIn: function() {
+                var performDataUpdate = AB.Comm.Relay.isNetworkConnected();
+
+                var noNetworkWarning = setTimeout(() => {
+                    if (AB.Comm.Relay.isNetworkConnected() == false) {
+                        this.$app.dialog.alert(
+                            '<t>No network detected. Please try again later.</t>',
+                            '<t>Sorry</t>'
+                        );
+                    }
+                }, 10000);
+//// Transition:
+                // var events = this.$root.getMobileApp('EVENTS');
+                // var hris = this.$root.getMobileApp('HRIS');
+                var events = {
+                    once:(key, cb)=>{ cb() }
+                }
+                var hris = events;
+
+                if (this.$root.account.authToken) {
+                    var numReady = 0;
+
+                    var checkEm = ()=>{
+                        numReady ++;
+                        if (numReady >= 2) {
+                            if (this.$app) {
+                                clearTimeout(noNetworkWarning);
+                                this.$app.router.navigate('/events/');
+
+                                if (performDataUpdate && this.$root.appPage.updateOnLogin) {
+                                    // we need to wait one second because doing this too fast clears the status and the app goes to init page
+                                    setTimeout(() => {
+                                        this.$root.appPage.fetchApplicationData({
+                                            refreshPage: true
+                                        });
+                                    }, 1000);
+                                }
+
+                            } else {
+                                console.error('::: f7-root.html: pageBeforeIn(): checkEm(): ready to navigate but this.$app not defined.');
+                            }
+
+// TODO: route to default landing page:
+// var user = hris.getMyPersonData();
+// if (Object.keys(user).length === 0 && user.constructor === Object) {
+//     this.$app.router.navigate('/settings/');
+// } else {
+//     this.$app.router.navigate('/events/');
+// }
+this.$root.appPage.appView.router.navigate('/coaching/initializing');
+// this.$app.router.navigate('/coaching/initializing');
+                        }
+                    }
+                    events.once('dataReady', ()=>{
+                        checkEm();
+                    });
+                    hris.once('dataReady',() => {
+                        checkEm();
+                    });
+                    events.once('initializeRemoteData', ()=>{
+                        // this means we are initializing the events app for the first time so we can skip the data update afterwards
+                        performDataUpdate = false;
+                    });
+                } else {
+                    console.log("going to settings page now");
+                    this.$root.appPage.appView.router.navigate('/settings/');
+                    // this.$app.router.navigate('/settings/');
+                }
+
+            }
+        }
+    };
+</script>

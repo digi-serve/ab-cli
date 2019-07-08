@@ -8,6 +8,9 @@ import initDefaultPages from "./init/initDefaultPages";
 import initResources from "./init/initResources";
 import Log from "./resources/Log";
 import Page from "./resources/Page.js";
+
+var config = require("./config/config.js");
+
 /*
  * Prepare Missing Functionality
  */
@@ -59,5 +62,12 @@ initMissingFunctionality
     })
     .then(() => {
         Log("bootstrap complete");
-        initDefaultPages.show("password");
+        if (
+            config.platform.encryptedStorage ||
+            config.platform.passwordProtected
+        ) {
+            initDefaultPages.show("password");
+        } else {
+            initDefaultPages.show("app");
+        }
     });

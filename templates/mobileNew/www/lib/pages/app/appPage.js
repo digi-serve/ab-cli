@@ -25,7 +25,13 @@ import updater from "../../resources/Updater.js";
 
 // // import moment from 'moment';
 
-// import SettingsComponent from './components/settings.js';
+import NavMenu from "../../applications/navMenu/app.js";
+const navMenu = new NavMenu();
+
+import Logs from "../../applications/Logs/app.js";
+const Logger = new Logs();
+
+import SettingsComponent from '../settings/settings.js';
 
 export default class AppPage extends Page {
     /**
@@ -106,11 +112,11 @@ export default class AppPage extends Page {
                     // It is not the same thing as the Framework7 app object.
                     // It is also not the same thing as the actual Cordova
                     // mobile app that this is all running in.
-                    getMobileApp: (name) => {
-                        return this.applications.find((a) => {
-                            return a.id == name;
-                        });
-                    },
+                    // getMobileApp: (name) => {
+                    //     return this.applications.find((a) => {
+                    //         return a.id == name;
+                    //     });
+                    // },
 
                     // return the ABApplication matching the given .id
                     getApplication: (id) => {
@@ -382,31 +388,13 @@ export default class AppPage extends Page {
         // Menu view
         this.menuView = this.app.views.create("#left-view", {
             url: "/nav/",
-            routes: [
-                {
-                    path: "/nav/",
-                    componentUrl: "./lib/app/templates/nav.html"
-                },
-                {
-                    path: "/nav/lock/",
-                    componentUrl: "./lib/app/templates/nav-lock.html"
-                },
-                {
-                    path: "/goals/",
-                    componentUrl: "./lib/app/templates/nav-goals.html"
-                }
-            ]
+            routes: navMenu.routes
         });
 
         // Log view
         this.logView = this.app.views.create("#right-view", {
             url: "/log/",
-            routes: [
-                {
-                    path: "/log/",
-                    componentUrl: "./lib/app/templates/log.html"
-                }
-            ]
+            routes: Logger.routes
         });
 
         // Main view
@@ -416,107 +404,12 @@ export default class AppPage extends Page {
                 {
                     // Root page
                     path: "/",
-                    componentUrl: "./lib/app/templates/f7-root.html"
+                    componentUrl: "./lib/applications/landingPage/templates/landing.html"
                 },
                 {
                     // Settings page
                     path: "/settings/",
-                    componentUrl: "./lib/app/templates/settings.html"
-                },
-                // Measurements
-                {
-                    path: "/goals/",
-                    // templateUrl: './lib/app/templates/nav-goals.html',
-                    routes: [
-                        {
-                            path: "activities/",
-                            componentUrl:
-                                "./lib/app/templates/goals-activities.html",
-                            routes: [
-                                {
-                                    path: "add/",
-                                    popup: {
-                                        componentUrl:
-                                            "./lib/app/templates/goals-activities-add.html"
-                                    }
-                                },
-                                {
-                                    path: "edit/",
-                                    popup: {
-                                        componentUrl:
-                                            "./lib/app/templates/goals-activities-edit.html"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            path: "communities/",
-                            componentUrl:
-                                "./lib/app/templates/goals-communities.html",
-                            routes: [
-                                {
-                                    path: "add/",
-                                    popup: {
-                                        componentUrl:
-                                            "./lib/app/templates/goals-communities-add.html"
-                                    }
-                                },
-                                {
-                                    path: "edit/",
-                                    popup: {
-                                        componentUrl:
-                                            "./lib/app/templates/goals-communities-edit.html"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            path: "dashboard/",
-                            componentUrl:
-                                "./lib/app/templates/goals-dashboard.html"
-                        },
-                        {
-                            path: "measure/",
-                            componentUrl:
-                                "./lib/app/templates/goals-measure.html",
-                            routes: [
-                                {
-                                    path: "add/",
-                                    alias: "edit/",
-                                    popup: {
-                                        componentUrl:
-                                            "./lib/app/templates/goals-measure-add.html"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            path: "people/",
-                            componentUrl:
-                                "./lib/app/templates/goals-people.html",
-                            routes: [
-                                {
-                                    path: "add/",
-                                    popup: {
-                                        componentUrl:
-                                            "./lib/app/templates/goals-people-add.html"
-                                    }
-                                },
-                                {
-                                    path: "edit/",
-                                    popup: {
-                                        componentUrl:
-                                            "./lib/app/templates/goals-people-edit.html"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            path: "reports/",
-                            componentUrl:
-                                "./lib/app/templates/goals-reports.html"
-                        }
-                    ]
+                    componentUrl: "./lib/applications/settings/templates/settings.html"
                 }
             ]
         };

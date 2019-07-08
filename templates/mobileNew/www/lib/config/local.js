@@ -23,6 +23,10 @@ module.exports = {
     onesignal: {
         appID: "<%= onesignalAppID %>"
     },
+    platform: {
+        encryptedStorage: true,
+        passwordProtected: true
+    },
     sentryio: {
         dsn: "<%= sentryDSN %>"
     }

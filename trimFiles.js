@@ -4,7 +4,6 @@ let args = require("minimist")(process.argv.slice(2));
 var fs = require("fs");
 var path = require("path");
 var writeFileTrim = require("write-file-trim");
-const removeTrailingSpaces = require("remove-trailing-spaces");
 
 args._.forEach((filePath) => {
     var pathToFile = path.join(__dirname, filePath);

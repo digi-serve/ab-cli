@@ -16,6 +16,7 @@ while (!isDir && attempt < 3) {
     if (files.indexOf("webserver.js") > -1) {
         isDir = true;
     }
+    attempt++;
 }
 if (attempt >= 3) {
     console.log("this must run from our [project]/www directory.");

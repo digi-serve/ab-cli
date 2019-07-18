@@ -96,11 +96,12 @@ export default class AppPage extends Page {
                     appPage: this,
 
                     account: account,
-                    updater: updater,
                     analytics: analytics,
-                    storage: storage,
-                    log: log,
                     camera: camera,
+                    log: log,
+                    network: Network,
+                    storage: storage,
+                    updater: updater,
 
                     getComponent: (name) => {
                         return this.components[name];

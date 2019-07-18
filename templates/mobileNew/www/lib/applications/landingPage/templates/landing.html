@@ -36,10 +36,10 @@
 
         on: {
             pageBeforeIn: function() {
-                var performDataUpdate = AB.Comm.Relay.isNetworkConnected();
+                var performDataUpdate = this.$root.network.isNetworkConnected();
 
                 var noNetworkWarning = setTimeout(() => {
-                    if (AB.Comm.Relay.isNetworkConnected() == false) {
+                    if (this.$root.network.isNetworkConnected() == false) {
                         this.$app.dialog.alert(
                             '<t>No network detected. Please try again later.</t>',
                             '<t>Sorry</t>'

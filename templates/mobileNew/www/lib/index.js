@@ -1,7 +1,7 @@
 // index.js
 // This is the initial bootstrap file for our Application
 
-/* global StatusBar */
+/* global StatusBar Cordova  */
 import initMissingFunctionality from "./init/initMissingFunctionality";
 import initBootupTimeout from "./init/initBootupTimeout";
 import initDefaultPages from "./init/initDefaultPages";
@@ -56,6 +56,12 @@ initMissingFunctionality
                 }, 0);
             }
         });
+    })
+    .then(() => {
+        if (typeof Cordova == "undefined") {
+            // we are most likely running in a browser for testing:
+            initDefaultPages.consoleDebugging();
+        }
     })
     .then(() => {
         return initBootupTimeout.clear();

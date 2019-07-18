@@ -3,6 +3,7 @@
  * Setup the main application Pages
  */
 import analytics from "../resources/Analytics.js";
+import account from "../resources/Account.js";
 
 import LoadingPage from "../pages/loadingPage.js";
 import PasswordPage from "../pages/password/passwordPage.js";
@@ -75,5 +76,14 @@ export default {
         if (pages[pageKey]) {
             pages[pageKey].show();
         }
+    },
+    /*
+     * consoleDebugging
+     * expose some of our resources globally so we can access them on the
+     * javascript console.
+     */
+    consoleDebugging: () => {
+        window.appPage = pages.app;
+        window.appPage.account = account;
     }
 };

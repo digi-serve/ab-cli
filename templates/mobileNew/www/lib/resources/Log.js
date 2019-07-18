@@ -23,6 +23,8 @@ var _remoteDebugURL = null;
 
 var _history = []; // the record of log messages
 var _oldConsoleLog = console.log;
+var _oldConsoleWarn = console.warn;
+var _oldConsoleError = console.error;
 
 /**
  * Wrapper for console.log()
@@ -206,3 +208,19 @@ log.disableRemoteLogging = function() {
 
     console.log = _oldConsoleLog;
 };
+
+/**
+ * expose the console.error() utility.
+ */
+log.error = function() {
+    // Log to actual device console first
+    _oldConsoleError.apply(console, arguments);
+}
+
+/**
+ * expose the console.warn() utility.
+ */
+log.warn = function() {
+    // Log to actual device console first
+    _oldConsoleWarn.apply(console, arguments);
+}

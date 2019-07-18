@@ -45,7 +45,30 @@ module.exports = {
         /**
          * feedback: the route that processes our AppFeedback transactions.
          */
-        feedback: "/opstool-sdc/SDCReports/feedback"
+        feedback: "/opstool-sdc/SDCReports/feedback",
+
+        /**
+         * mobileInit: the route for initializing our credentials with the
+         * public relay server.
+         */
+        mobileInit: "/mobile/init",
+
+        /**
+         * mobileInitResolve: the route for resolving our initialization
+         * with the public relay server
+         */
+        mobileInitResolve: "/mobile/initresolve",
+
+        /**
+         * relayRequest: the route for polling the public relay server
+         * to get any pending responses waiting for us.
+         */
+        relayRequest: "/mobile/relayrequest",
+
+        /**
+         * userData: the route that returns information about this user
+         */
+        userData: "/site/user/data"
     },
 
     /**

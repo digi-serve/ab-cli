@@ -9,8 +9,12 @@
 
 import analytics from "./Analytics.js";
 import EventEmitter from "eventemitter2";
+import Log from "./Log.js";
+import Network from "./Network";
 import { storage } from "./Storage.js";
 import updater from "./Updater.js";
+
+var config = require("../config/config.js");
 
 class Account extends EventEmitter {
     constructor() {
@@ -69,7 +73,7 @@ class Account extends EventEmitter {
                         key: "platform.account.username",
                         context: {}
                     };
-                    AB.Comm.Relay.on(responseContext.key, (context, data) => {
+                    Network.on(responseContext.key, (context, data) => {
                         storage.set("siteUserData", data).then(() => {
                             this.username = data.user.username;
                             this.relayReady.resolve();
@@ -77,8 +81,8 @@ class Account extends EventEmitter {
                     });
 
                     // Call the url
-                    AB.Comm.Relay.get(
-                        { url: "/site/user/data" },
+                    Network.get(
+                        { url: config.appbuilder.routes.userData },
                         responseContext
                     );
                 }
@@ -102,9 +106,9 @@ class Account extends EventEmitter {
      */
     setAuthToken(authToken) {
         analytics.event("importSettings(): reset credentials");
-        console.log("::: importSettings(): reset credentials");
-        return AB.Comm.Relay.reset().then(() => {
-            console.log("::: importSettings(): saved new credentials");
+        Log("::: importSettings(): reset credentials");
+        return Network.reset().then(() => {
+            Log("::: importSettings(): saved new credentials");
             this.authToken = authToken;
             return storage.set("authToken", this.authToken);
         });
@@ -129,7 +133,7 @@ class Account extends EventEmitter {
      */
     importSettings(data) {
         if (this.importInProgress) {
-            console.log("::: importSettings(): already in progress");
+            Log("::: importSettings(): already in progress");
             return;
         }
         this.importInProgress = true;
@@ -154,7 +158,7 @@ class Account extends EventEmitter {
                 "<t>Connecting your account</t>"
             );
 
-            console.log("::: QRInitBegin :::");
+            Log("::: QRInitBegin :::");
 
             // Should be possible to have a QR code with only auth_token,
             // only updateKeys, or both.
@@ -183,7 +187,7 @@ class Account extends EventEmitter {
                             return null;
                         } else if (currentAuthToken == authToken) {
                             // authToken remains unchanged.
-                            console.log(
+                            Log(
                                 "::: importSettings(): credentials unchanged"
                             );
                             shouldImportAuthToken = false;
@@ -241,10 +245,10 @@ class Account extends EventEmitter {
                             message: "Error importing data",
                             error: err
                         });
-                        console.error(
+                        Log.error(
                             "Error while importing credentials from QR code"
                         );
-                        console.log(err);
+                        Log(err);
                         authTokenReady.reject(err);
                     });
             } else {
@@ -266,7 +270,7 @@ class Account extends EventEmitter {
 
                     var listeners = {
                         upToDate: () => {
-                            console.log(
+                            Log(
                                 "::: importSettings(): code up to date"
                             );
                             importState.deploymentKeys = true;
@@ -274,7 +278,7 @@ class Account extends EventEmitter {
                             codePushReady.resolve();
                         },
                         installed: () => {
-                            console.log(
+                            Log(
                                 "::: importSettings(): new code installed"
                             );
                             shouldRestart = true;
@@ -283,7 +287,7 @@ class Account extends EventEmitter {
                             codePushReady.resolve();
                         },
                         error: () => {
-                            console.log(
+                            Log(
                                 "::: importSettings(): error syncing code"
                             );
                             clearListeners();
@@ -310,7 +314,7 @@ class Account extends EventEmitter {
             Promise.all([authTokenReady, codePushReady])
                 .then(() => {
                     this.importInProgress = false;
-                    console.log("::: importSettings(): all done!");
+                    Log("::: importSettings(): all done!");
 
                     loader.$el.remove();
                     loader.close();
@@ -324,8 +328,8 @@ class Account extends EventEmitter {
                 })
                 .catch((err) => {
                     this.importInProgress = false;
-                    console.log("::: importSettings(): error");
-                    console.log(err.message || err);
+                    Log("::: importSettings(): error");
+                    Log(err.message || err);
                     analytics.logError(err);
                     this.emit("importError", err);
 

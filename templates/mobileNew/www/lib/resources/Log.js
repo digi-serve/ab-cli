@@ -215,7 +215,7 @@ log.disableRemoteLogging = function() {
 log.error = function() {
     // Log to actual device console first
     _oldConsoleError.apply(console, arguments);
-}
+};
 
 /**
  * expose the console.warn() utility.
@@ -223,4 +223,4 @@ log.error = function() {
 log.warn = function() {
     // Log to actual device console first
     _oldConsoleWarn.apply(console, arguments);
-}
+};

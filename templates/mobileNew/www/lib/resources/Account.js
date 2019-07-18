@@ -187,9 +187,7 @@ class Account extends EventEmitter {
                             return null;
                         } else if (currentAuthToken == authToken) {
                             // authToken remains unchanged.
-                            Log(
-                                "::: importSettings(): credentials unchanged"
-                            );
+                            Log("::: importSettings(): credentials unchanged");
                             shouldImportAuthToken = false;
                             return null;
                         } else {
@@ -270,26 +268,20 @@ class Account extends EventEmitter {
 
                     var listeners = {
                         upToDate: () => {
-                            Log(
-                                "::: importSettings(): code up to date"
-                            );
+                            Log("::: importSettings(): code up to date");
                             importState.deploymentKeys = true;
                             clearListeners();
                             codePushReady.resolve();
                         },
                         installed: () => {
-                            Log(
-                                "::: importSettings(): new code installed"
-                            );
+                            Log("::: importSettings(): new code installed");
                             shouldRestart = true;
                             importState.deploymentKeys = true;
                             clearListeners();
                             codePushReady.resolve();
                         },
                         error: () => {
-                            Log(
-                                "::: importSettings(): error syncing code"
-                            );
+                            Log("::: importSettings(): error syncing code");
                             clearListeners();
                             this.emit("QRInitError", {
                                 message: "Error Updating code"

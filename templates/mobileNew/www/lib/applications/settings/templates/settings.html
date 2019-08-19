@@ -185,9 +185,11 @@
      * the page is not active should be handled with the help of the settings
      * component object rather than purely here on this page's script.
      */
-
+    var Network;
     return {
         data: function() {
+            Network = this.$root.network;
+
             // See lib/app/controllers/appPage.js
             var appPage = this.$root.appPage;
 
@@ -315,14 +317,14 @@
                 updater.getPackageInfo();
                 settings.renderPackageInfo();
 
-                // var events = this.$root.getMobileApp('EVENTS');
-                // var hris = this.$root.getMobileApp('HRIS');
+                // var events = this.$root.getApplication('EVENTS');
+                // var hris = this.$root.getApplication('HRIS');
                 var syncing;
 
                 // Sync with server
                 $('#sync-with-server').on('click', () => {
 
-                    if (!AB.Comm.Relay.isNetworkConnected()) {
+                    if (!Network.isNetworkConnected()) {
                         self.$app.dialog.alert(
                             '<t>Make sure you are connected to the Internet before trying to update your data.</t>',
                             '<t>No Network Detected.</t>'

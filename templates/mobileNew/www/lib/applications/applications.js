@@ -12,10 +12,12 @@
 "use strict";
 
 // import the applications
-// import COACHING from './coaching2/app';
+/* APPBUILDER:IMPORT APP */
+//import COACHING from './coaching/app';
 
 // make a list of their instances:
 var applications = [];
+/* APPBUILDER:PUSH OBJECT */
 // applications.push(new COACHING());
 
 // return them here:

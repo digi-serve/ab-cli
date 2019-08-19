@@ -1,0 +1,109 @@
+<!-- framework7 component template -->
+<template>
+    <div class="page">
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="title">Device Logs</div>
+                <div class="right">
+                    <a id="clearLog" class="link icon-only text-color-gray" href="#">
+                        <i class="fa fa-ban"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sheet-modal" id="log-item-sheet">
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <div class="left"></div>
+                    <div class="right">
+                        <a class="link sheet-close">Done</a>
+                    </div>
+                </div>
+            </div>
+            <div class="sheet-modal-inner" style="overflow: auto;">
+                <div class="block">
+                    <p class="log-item-detail"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-content">
+            <div class="list" style="margin: 0;">
+                <ul id="deviceLogs">
+                {{#each logItems}}
+                    <li class="item-content">
+                        <div class="item-inner">
+                            <div class="item-subtitle">{{this}}</div>
+                        </div>
+                    </li>
+                {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</template>
+
+
+<!-- framework7 component script -->
+<script>
+var router = null; // will be assigned in pageInit()
+
+// This will be used as an event listener for when new messages are added
+function newMessageHandler(logItem='') {
+    //$('#deviceLogs').append(logItem);
+    
+    // Refresh so the template can display the new items
+    if (router) {
+        router.refreshPage();
+    }
+}
+
+return {
+    data: function() {
+        return {
+            // Array of strings
+            logItems: this.$root.log.getHistory()
+        };
+    },
+    
+    on: {
+        pageInit: function() {
+            var log = this.$root.log
+            router = this.$router;
+            
+            // Scroll to the bottom to show most recent entries
+            var $page = $('#right-view .page-current .page-content');
+            $page.scrollTop($page.height());
+            
+            $('#clearLog').on("click", () => {
+                log.clearHistory();
+                router.refreshPage();
+                //$("#deviceLogs").html("");
+            });
+            
+            // This sheet will show expanded view of a selected log item
+            var sheet = this.$app.sheet.create({
+                el: $('#log-item-sheet').get(0),
+            });
+            // Show sheet when log item is clicked
+            $('#deviceLogs').on('click', '.item-subtitle', (ev) => {
+                var $item = $(ev.target);
+                // Copy log item text onto sheet
+                $('#log-item-sheet .log-item-detail').html($item.html());
+                sheet.open();
+            });
+            
+            // Start listening for messages
+            log.emitter.on('message', newMessageHandler);
+        },
+        
+        // Stop event listeners
+        pageBeforeRemove: function() {
+            var log = this.$root.log;
+            log.emitter.off('message', newMessageHandler);
+        },
+    }
+}
+</script>

@@ -2,7 +2,7 @@ var path = require("path");
 module.exports = {
     entry: {
         "<%= appName %>": "./www/lib/index.js",
-        "pbkdf2-worker-bundle": "./www/lib/resources/PBKDF2-worker.js"
+        "pbkdf2-worker-bundle": "./www/lib/platform/resources/PBKDF2-worker.js"
     },
     devtool: "source-map",
     output: {

@@ -28,6 +28,7 @@
 
 <!-- Framework7 component script -->
 <script>
+    var Network;
     return {
         data: function() {
             return {
@@ -36,10 +37,11 @@
 
         on: {
             pageBeforeIn: function() {
-                var performDataUpdate = this.$root.network.isNetworkConnected();
+                Network = this.$root.network;
+                var performDataUpdate = Network.isNetworkConnected();
 
                 var noNetworkWarning = setTimeout(() => {
-                    if (this.$root.network.isNetworkConnected() == false) {
+                    if (Network.isNetworkConnected() == false) {
                         this.$app.dialog.alert(
                             '<t>No network detected. Please try again later.</t>',
                             '<t>Sorry</t>'
@@ -47,8 +49,8 @@
                     }
                 }, 10000);
 //// Transition:
-                // var events = this.$root.getMobileApp('EVENTS');
-                // var hris = this.$root.getMobileApp('HRIS');
+                // var events = this.$root.getApplication('EVENTS');
+                // var hris = this.$root.getApplication('HRIS');
                 var events = {
                     once:(key, cb)=>{ cb() }
                 }
@@ -62,7 +64,9 @@
                         if (numReady >= 2) {
                             if (this.$app) {
                                 clearTimeout(noNetworkWarning);
-                                this.$app.router.navigate('/events/');
+                                // this.$app.router.navigate('/events/');
+                                // this.$root.appPage.appView.router.navigate('/coaching/initializing');
+                                this.$router.navigate('/coaching/initializing');
 
                                 if (performDataUpdate && this.$root.appPage.updateOnLogin) {
                                     // we need to wait one second because doing this too fast clears the status and the app goes to init page
@@ -76,7 +80,6 @@
                             } else {
                                 console.error('::: f7-root.html: pageBeforeIn(): checkEm(): ready to navigate but this.$app not defined.');
                             }
-
 // TODO: route to default landing page:
 // var user = hris.getMyPersonData();
 // if (Object.keys(user).length === 0 && user.constructor === Object) {
@@ -84,8 +87,9 @@
 // } else {
 //     this.$app.router.navigate('/events/');
 // }
-this.$root.appPage.appView.router.navigate('/coaching/initializing');
+// this.$root.appPage.appView.router.navigate('/coaching/initializing');
 // this.$app.router.navigate('/coaching/initializing');
+// this.$router.navigate('/coaching/');
                         }
                     }
                     events.once('dataReady', ()=>{
@@ -100,7 +104,8 @@ this.$root.appPage.appView.router.navigate('/coaching/initializing');
                     });
                 } else {
                     console.log("going to settings page now");
-                    this.$root.appPage.appView.router.navigate('/settings/');
+                    this.$router.navigate('/settings/');
+                    // this.$root.appPage.appView.router.navigate('/settings/');
                     // this.$app.router.navigate('/settings/');
                 }
 

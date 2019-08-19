@@ -8,18 +8,16 @@
  */
 "use strict";
 
-///// NOTE: remove this /* global */ once we are importing our AB* classes
-/* global ABApplication ABObject ABObjectQuery ABDataCollection */
-
-// import ABApplication from "./platform/ABApplication";
-// import ABObject from "./platform/ABObject";
-// import ABObjectQuery from "./platform/ABObjectQuery";
-// import ABDataCollection from "./platform/views/ABViewDataCollection";
+// NOTE: any import of our /platform or /core must use the require() format.
+var ABApplication = require("./platform/AppBuilder/platform/ABApplication");
+var ABObject = require("./platform/AppBuilder/platform/ABObject");
+var ABObjectQuery = require("./platform/AppBuilder/platform/ABObjectQuery");
+var ABDataCollection = require("./platform/AppBuilder/platform/views/ABViewDataCollection");
 
 //import the applications
 var allAppConfigs = [];
-
-// import COACHING_CONFIG from '../app/applications/coaching2/config_app';
+/* APPBUILDER:IMPORT APP */
+// import COACHING_CONFIG from './applications/coaching/config_app';
 // allAppConfigs.push(COACHING_CONFIG);
 
 var _AllApplications = [];

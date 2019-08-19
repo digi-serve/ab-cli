@@ -99,7 +99,7 @@ var hrisReadyHandler = function() {
 return {
     data: function() {
 //// Transition:
-        // hris = this.$root.getMobileApp('HRIS');
+        // hris = this.$root.getApplication('HRIS');
 
         return {
             // user: hris.getMyPersonData(),
@@ -111,7 +111,7 @@ return {
     on: {
         pageInit: function() {
             var appPage = this.$root.appPage;
-            // hris = this.$root.getMobileApp('HRIS');
+            // hris = this.$root.getApplication('HRIS');
 
             $('button#send-feedback').on('click', () => {
                 this.$app.panel.close('left');

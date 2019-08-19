@@ -2,12 +2,12 @@
 // This is the initial bootstrap file for our Application
 
 /* global StatusBar Cordova  */
-import initMissingFunctionality from "./init/initMissingFunctionality";
-import initBootupTimeout from "./init/initBootupTimeout";
-import initDefaultPages from "./init/initDefaultPages";
-import initResources from "./init/initResources";
-import Log from "./resources/Log";
-import Page from "./resources/Page.js";
+import initMissingFunctionality from "./platform/init/initMissingFunctionality";
+import initBootupTimeout from "./platform/init/initBootupTimeout";
+import initDefaultPages from "./platform/init/initDefaultPages";
+import initResources from "./platform/init/initResources";
+import Log from "./platform/resources/Log";
+import Page from "./platform/resources/Page.js";
 
 var config = require("./config/config.js");
 

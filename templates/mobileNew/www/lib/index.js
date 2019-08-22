@@ -26,9 +26,6 @@ initMissingFunctionality
         return initDefaultPages.init();
     })
     .then(() => {
-        return initResources.init();
-    })
-    .then(() => {
         //// System DeviceReady signal
         return new Promise((resolve /* , reject */) => {
             // if we are in a cordova enviroment (on a mobile platform)
@@ -56,6 +53,9 @@ initMissingFunctionality
                 }, 0);
             }
         });
+    })
+    .then(() => {
+        return initResources.init();
     })
     .then(() => {
         if (typeof Cordova == "undefined") {

@@ -1,0 +1,35 @@
+version: "3.2"
+services:
+  # use Maria DB as our backend DB
+  db:
+    image: mariadb
+#    restart: always
+    ports:
+      - "8889:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - type: bind
+        source: ./mysql/init
+        target: /docker-entrypoint-initdb.d
+      - type: bind
+        source: ./mysql/data
+        target: /var/lib/mysql
+
+  # include ArrangoDB for AB definitions
+  arangodb:
+    image: arangodb
+    ports:
+      - "8529:8529"
+    environment:
+      ARANGO_ROOT_PASSWORD: "root"
+    volumes:
+      - type: bind
+        source: ./arango/data
+        target: /var/lib/arangodb3
+      - type: bind
+        source: ./arango/apps
+        target: /var/lib/arangodb3-apps
+      - type: bind
+        source: ./arango/init
+        target: /docker-entrypoint-initdb.d

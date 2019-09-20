@@ -5,8 +5,8 @@ module.exports = {
             host: "db",
             port: 3306,
             user: "root",
-            password: "root",
-            database: "test_docker"
+            password: "<%=dbPassword%>",
+            database: "site"
         },
         appBuilder: {
             adapter: null,
@@ -30,7 +30,7 @@ module.exports = {
         graphDB: {
             url: "http://arangodb:8529",
             user: "root",
-            pass: "root"
+            pass: "<%=arangoPassword%>"
         }
     },
     nodemailer: {

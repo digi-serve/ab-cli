@@ -94,9 +94,11 @@ services:
       - type: bind
         source: ./data
         target: /app/data
-      ### api_sails volumes ###
-      # - type: bind
-      #   source: ./developer/app_builder
-      #   target: /app/node_modules/app_builder
+      - type: bind
+        source: ./developer/app_builder
+        target: /app/node_modules/app_builder
+      - type: bind
+        source: ./developer/appdev-core
+        target: /app/node_modules/appdev-core
     command: ["node", "--inspect", "--max-old-space-size=2048", "--stack-size=2048", "app.js"]
   #/api_sails

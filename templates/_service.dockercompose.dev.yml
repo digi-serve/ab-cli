@@ -5,8 +5,8 @@
     image: node
     # ports:
     #   - "9229:9229"
-    working_dir: /app
-    command: npm run dev
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
     volumes:
       - type: bind
         source: ./developer/[name]
@@ -14,4 +14,8 @@
       - type: bind
         source: ./config/local.js
         target: /app/config/local.js
+    depends_on:
+      - redis
+    working_dir: /app
+    command: npm run dev
   #/[serviceName]

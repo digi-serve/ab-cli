@@ -5,8 +5,12 @@
   #   image: skipdaddy/ab-[containerName]:<%=tag%>
   #   # ports:
   #   #   - "9229:9229"
+  #   environment:
+  #    - COTE_DISCOVERY_REDIS_HOST=redis
   #   volumes:
   #     - type: bind
   #       source: ./config/local.js
   #       target: /app/config/local.js
+  #   depends_on:
+  #     - redis
   # #/[serviceName]

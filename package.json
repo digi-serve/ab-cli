@@ -18,17 +18,17 @@
     "ejs": "^2.6.1",
     "inquirer": "^6.2.1",
     "junk": "^2.1.0",
-    "lodash": "4.17.13",
+    "lodash": "^4.17.13",
     "minimist": "^1.2.0",
     "nanoid": "^2.0.1",
     "progress": "^2.0.3",
     "shelljs": "^0.8.3"
   },
   "devDependencies": {
-    "eslint": "5.12.1",
-    "eslint-config-prettier": "3.6.0",
-    "eslint-plugin-prettier": "3.0.1",
-    "prettier": "1.16.1",
+    "eslint": "^5.12.1",
+    "eslint-config-prettier": "^3.6.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "prettier": "^1.16.1",
     "write-file-trim": "^1.0.8"
   },
   "scripts": {

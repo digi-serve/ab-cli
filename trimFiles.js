@@ -6,11 +6,11 @@ var path = require("path");
 var writeFileTrim = require("write-file-trim");
 
 args._.forEach((filePath) => {
-    var pathToFile = path.join(__dirname, filePath);
+   var pathToFile = path.join(__dirname, filePath);
 
-    var contents = fs.readFileSync(pathToFile, "utf8");
+   var contents = fs.readFileSync(pathToFile, "utf8");
 
-    writeFileTrim(pathToFile, contents, (err /* , data */) => {
-        console.log(err || "Trimmed:" + filePath);
-    });
+   writeFileTrim(pathToFile, contents, (err /* , data */) => {
+      console.log(err || "Trimmed:" + filePath);
+   });
 });

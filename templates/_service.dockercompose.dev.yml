@@ -1,7 +1,7 @@
 
 
-  #[serviceName]: [description]
-  [serviceName]:
+  #[name]: [description]
+  [name]:
     image: node
     # ports:
     #   - "9229:9229"
@@ -18,4 +18,4 @@
       - redis
     working_dir: /app
     command: npm run dev
-  #/[serviceName]
+  #/[name]

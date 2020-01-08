@@ -6,31 +6,36 @@
  * header:  X-CSRF-Token : [token]
  * params:
  */
-const cote = require("cote");
-const client = new cote.Requester({
-    name: "api_sails > <%= service %> > <%= action %>"
-});
-const shortid = require("shortid");
+
+var inputParams = {
+   /*    "email": { type: "email", required:true }   */
+};
 
 // make sure our BasePath is created:
 module.exports = function(req, res) {
-    // Package the Find Request and pass it off to the service
+   // Package the Find Request and pass it off to the service
 
-    var jobID = shortid.generate();
+   req.ab.log(`<%= service %>::<%= action %>`);
 
-    console.log(`<%= service %>::<%= action %>::${jobID}`);
+   // verify your inputs are correct:
+   // false : prevents an auto error response if detected. (default: true)
+   if (!req.ab.validateParameters(inputParams /*, false */)) {
+      // an error message is automatically returned to the client
+      // so be sure to return here;
+      return;
+   }
 
-    // create a new job for the file_processor
-    let jobData = {
-        jobID: jobID
-    };
+   // create a new job for the service
+   let jobData = {
+      // your data here
+   };
 
-    // pass the request off to the uService:
-    client.send({ type: "<%= key %>", param: jobData }, (err, results) => {
-        if (err) {
-            res.json({ status: "error", error: err });
-            return;
-        }
-        res.json({ status: "success", data: results });
-    });
+   // pass the request off to the uService:
+   req.ab.serviceRequest("<%= key %>", jobData, (err, results) => {
+      if (err) {
+         res.ab.error(err);
+         return;
+      }
+      res.ab.success(results);
+   });
 };

@@ -1,7 +1,7 @@
 
 
-  # #[serviceName]: [description]
-  # [serviceName]:
+  # #[name]: [description]
+  # [name]:
   #   image: skipdaddy/ab-[containerName]:<%=tag%>
   #   # ports:
   #   #   - "9229:9229"
@@ -13,4 +13,4 @@
   #       target: /app/config/local.js
   #   depends_on:
   #     - redis
-  # #/[serviceName]
+  # #/[name]

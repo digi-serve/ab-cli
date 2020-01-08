@@ -38,8 +38,10 @@ module.exports = {
 
       "error",
       {
-        "tabWidth": 4,
-        "arrowParens": "always"
+        "arrowParens": "always",
+        "endOfLine": "lf",
+        "printWidth": 80,
+        "tabWidth": 3
       }
     ],
 

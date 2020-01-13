@@ -8,7 +8,7 @@
  */
 
 var inputParams = {
-   /*    "email": { type: "email", required:true }   */
+   /*    "email": { required:true, validation:{ type: "email" } }   */
 };
 
 // make sure our BasePath is created:

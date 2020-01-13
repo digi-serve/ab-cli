@@ -18,60 +18,62 @@ module.exports = {
     *        a node style callback(err, results) to send data when job is finished
     */
    fn: function handler(req, cb) {
-      var err;
+      //
 
+      // access your config settings if you need them:
+      /*
       var config = req.config();
+       */
 
-      // if config not set, we have not be initialized properly.
-      if (!config) {
-         req.log("WARN: <%= key %> handler not setup properly.");
-         err = new Error("<%= key %>: Missing config");
-         err.code = "EMISSINGCONFIG";
-         err.req = req;
-         cb(err);
-         return;
-      }
-
-      // check if we are enabled
-      if (!config.enable) {
-         // we shouldn't be getting notification.email messages
-         req.log(
-            "WARN: <%= service %> job received, but config.enable is false."
-         );
-         err = new Error("<%= key %> service is disabled.");
-         err.code = "EDISABLED";
-         cb(err);
-         return;
-      }
-
-      // verify required parameters in job
+      // Get the passed in parameters
       /*
       var email = req.param("email");
-      if (!email) {
-         var err2 = new Error(
-            ".email parameter required in <%= key %> service."
-         );
-         err2.code = "EMISSINGPARAM";
-         cb(err2);
-         return;
-      }
-      */
+       */
 
       // access any Models you need
       /*
       var Model = req.model("Name");
-      Model.find().then().catch();
        */
 
       /*
        * perform action here.
        *
        * when job is finished then:
-      cb(null, { status: "success" });
+      cb(null, { param: "value" });
 
        * or if error then:
-      cb(err, { status: "error", error: err });
+      cb(err);
+
+       * example:
+      Model.find({ email })
+         .then((list) => {
+            cb(null, list);
+         })
+         .catch((err) => {
+            cb(err);
+         });
+
        */
       cb(null, { status: "success" });
+   },
+
+   /**
+    * inputValidation
+    * define the expected inputs to this service handler:
+    * Format:
+    * "parameterName" : {
+    *    "required" : {bool},  // default = false
+    *    "validation" : {fn|obj},
+    *                   {fn} a function(value) that returns true/false if
+    *                        the value if valid.
+    *                   {obj}: .type: {string} the data type
+    *                                 [ "string", "uuid", "email", "number", ... ]
+    * }
+    */
+   inputValidation: {
+      // uuid: {
+      //    required: true,
+      //    validation: { type: "uuid" }
+      // }
    }
 };

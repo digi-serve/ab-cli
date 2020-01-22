@@ -26,6 +26,8 @@ services:
       - type: bind
         source: ./mysql/password
         target: /secret/password
+    # on windows: use this command. (be sure to clear out mysql/data folder)
+    # command: mysqld --innodb-flush-method=littlesync --innodb-use-native-aio=OFF --log_bin=ON
 
   # include ArrangoDB for AB definitions
   arangodb:

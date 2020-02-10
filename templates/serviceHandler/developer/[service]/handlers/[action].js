@@ -65,7 +65,7 @@ module.exports = {
     *    "required" : {bool},  // default = false
     *    "validation" : {fn|obj},
     *                   {fn} a function(value) that returns true/false if
-    *                        the value if valid.
+    *                        the value is valid.
     *                   {obj}: .type: {string} the data type
     *                                 [ "string", "uuid", "email", "number", ... ]
     * }

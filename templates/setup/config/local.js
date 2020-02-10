@@ -60,6 +60,33 @@ module.exports = {
     * notification_email
     * our smtp email service
     */
-   notification_email: {}
+   notification_email: {},
    /* end notification_email */
+
+   /**
+    * tenant_manager
+    * manages the different tenants in our system
+    */
+   tenant_manager: {
+      enable: true
+   },
+   /* end tenant_manager */
+
+   /**
+    * user_manager
+    * manage the users withing a tenant
+    */
+   user_manager: {
+      enable: true
+   },
+   /* end user_manager */
+
+   /**
+    * process_manager
+    * manages processes
+    */
+   process_manager: {
+      enable: true
+   }
+   /* end process_manager */
 };

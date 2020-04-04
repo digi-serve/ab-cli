@@ -19,7 +19,7 @@
     "inquirer": "^6.2.1",
     "junk": "^2.1.0",
     "lodash": "^4.17.13",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.3",
     "nanoid": "^2.0.1",
     "progress": "^2.0.3",
     "shelljs": "^0.8.3"

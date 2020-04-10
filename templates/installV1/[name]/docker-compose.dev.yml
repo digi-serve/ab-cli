@@ -74,5 +74,8 @@ services:
       - type: bind
         source: ./developer/appdev-core
         target: /app/node_modules/appdev-core
+      - type: bind
+        source: ./developer/appdev-opsportal
+        target: /app/node_modules/appdev-opsportal
     command: ["node", "--inspect", "--max-old-space-size=2048", "--stack-size=2048", "app.js"]
   #/api_sails

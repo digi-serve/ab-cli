@@ -77,5 +77,9 @@ services:
       - type: bind
         source: ./developer/appdev-opsportal
         target: /app/node_modules/appdev-opsportal
-    command: ["node", "--inspect", "--max-old-space-size=2048", "--stack-size=2048", "app.js"]
+    # use app_cli.js when you need to connect to the cli of the container
+    # and then run setup on a sub module. This is especially useful when
+    # sails is crashing and won't let you connect.
+    # command: ["node", "app_cli.js"]
+    command: ["node", "--inspect", "--max-old-space-size=2048", "--stack-size=2048", "app_waitForMySql.js"]
   #/api_sails

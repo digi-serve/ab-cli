@@ -58,6 +58,8 @@ services:
     ports:
       - "1337:1337"
       # - "9229:9229"
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
     volumes:
       - type: bind
         source: ./config/local.js
@@ -71,3 +73,16 @@ services:
     # command: ["node", "app_cli.js"]
     command: ["node", "--inspect", "--max-old-space-size=2048", "--stack-size=2048", "app_waitForMySql.js"]
   #/api_sails
+
+
+  #redis: use redis to allow cote services to find each other across a swarm
+  redis:
+    image: redis
+    #ports:
+    #  - 6379:6379
+    volumes:
+      - type: bind
+        source: ./redis/data
+        target: /data
+    command: redis-server --appendonly yes
+  #/redis

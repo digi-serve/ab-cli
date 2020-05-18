@@ -16,6 +16,27 @@ module.exports = {
          database: "appbuilder"
       }
    },
+   // connections:
+   // Sails style DB connection settings
+   datastores: {
+      appbuilder: {
+         adapter: "sails-mysql",
+         host: "db",
+         port: 3306,
+         user: "root",
+         password: "<%=dbPassword%>",
+         database: "appbuilder"
+      },
+      site: {
+         adapter: "sails-mysql",
+         host: "db",
+         port: 3306,
+         user: "root",
+         password: "<%=dbPassword%>",
+         database: "site"
+      }
+   },
+
    appbuilder: {
       baseURL: "http://localhost:1337",
       deeplink: null,
@@ -42,5 +63,25 @@ module.exports = {
          port: 25
       }
    },
-   crontab: {}
+   crontab: {},
+
+   // notification_email
+   // our smtp email service
+   notification_email: {
+      enable: false,
+      default: "smtp",
+      smtp: {
+         type: "SMTP",
+         host: "smtp.host.com",
+         secureConnection: false,
+         port: 25
+      }
+   },
+   /* end notification_email */
+
+   // process_manager
+   // service for managing our process tasks
+   process_manager: {
+      enable: true
+   }
 };

@@ -47,12 +47,7 @@ module.exports = {
          pollFrequency: 5000,
          maxPacketSize: 1048576
       },
-      pathFiles: "data/app_builder",
-      graphDB: {
-         url: "http://arangodb:8529",
-         user: "root",
-         pass: "<%=arangoPassword%>"
-      }
+      pathFiles: "data/app_builder"
    },
    nodemailer: {
       default: "smtp",

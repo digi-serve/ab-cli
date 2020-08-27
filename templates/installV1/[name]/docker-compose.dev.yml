@@ -30,24 +30,6 @@ services:
     # command: mysqld --innodb-flush-method=littlesync --innodb-use-native-aio=OFF --log_bin=ON
   #/db
 
-  # include ArrangoDB for AB definitions
-  arangodb:
-    image: arangodb
-    ports:
-      - "<%=arangoPort%>:8529"
-    environment:
-      ARANGO_ROOT_PASSWORD: "<%=arangoPassword%>"
-    volumes:
-      - type: bind
-        source: ./arango/data
-        target: /var/lib/arangodb3
-      - type: bind
-        source: ./arango/apps
-        target: /var/lib/arangodb3-apps
-      - type: bind
-        source: ./arango/init
-        target: /docker-entrypoint-initdb.d
-
   #api_sails: the AppBuilder Developer Container
   api_sails:
     image: skipdaddy/install-ab:developer_v2

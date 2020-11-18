@@ -26,5 +26,8 @@ services:
       - type: bind
         source: ./mysql/password
         target: /secret/password
+    # when there is a problem with : Error: ER_CRASHED_ON_USAGE: Table 'AAAAAA' is marked as crashed and should be repaired
+    # this can happen with the alter table algorithm: try the safest(and slowest) COPY
+    # command: ["mysqld", "--alter-algorithm=copy"]
     # on windows: use this command. (be sure to clear out mysql/data folder)
     # command: mysqld --innodb-flush-method=littlesync --innodb-use-native-aio=OFF --log_bin=ON

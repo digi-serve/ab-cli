@@ -32,7 +32,7 @@ module.exports = {
          port: 3306,
          user: "root",
          password: "root",
-         database: "site"
+         database: "appbuilder-admin"
       }
    },
    /* end datastores */
@@ -68,7 +68,16 @@ module.exports = {
     * manages the different tenants in our system
     */
    tenant_manager: {
-      enable: true
+      enable: true,
+      // {bool} enable the tenant_manager service.
+      // don't turn this off.  You wont like it if you turn it off.
+
+      siteTenantID: "admin"
+      // {string} the uuid of what is considered the "Admin" Tenant.
+      // this resolves to the Tenant Manager Site, and is established on
+      // install.  It can be reconfigured ... but only if you know what
+      // you are doing.
+      // You have been warned ...
    },
    /* end tenant_manager */
 

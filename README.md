@@ -17,8 +17,6 @@ $ appbuilder install [target_directory] --develop --V1
 
 See https://appdevdesigns.github.io/appbuilder_docs/develop/setup/Setup.html
 
-This creates an environment with 
-
 
 ## Production Install
 

@@ -10,10 +10,35 @@ module.exports = {
    key: "<%= key %>",
 
    /**
+    * inputValidation
+    * define the expected inputs to this service handler:
+    * Format:
+    * "parameterName" : {
+    *    {joi.fn}   : {bool},  // performs: joi.{fn}();
+    *    {joi.fn}   : {
+    *       {joi.fn1} : true,   // performs: joi.{fn}().{fn1}();
+    *       {joi.fn2} : { options } // performs: joi.{fn}().{fn2}({options})
+    *    }
+    *    // examples:
+    *    "required" : {bool},
+    *    "optional" : {bool},
+    *
+    *    // custom:
+    *        "validation" : {fn} a function(value, {allValues hash}) that
+    *                       returns { error:{null || {new Error("Error Message")} }, value: {normalize(value)}}
+    * }
+    */
+   inputValidation: {
+      // uuid: { string: { uuid: true }, required: true },
+      // email: { string: { email: true }, optional: true },
+   },
+
+   /**
     * fn
     * our Request handler.
     * @param {obj} req
-    *        the request object sent by the api_sails/api/controllers/<%= service %>/<%= action %>.
+    *        the request object sent by the
+    *        api_sails/api/controllers/<%= service %>/<%= action %>.
     * @param {fn} cb
     *        a node style callback(err, results) to send data when job is finished
     */
@@ -55,25 +80,5 @@ module.exports = {
 
        */
       cb(null, { status: "success" });
-   },
-
-   /**
-    * inputValidation
-    * define the expected inputs to this service handler:
-    * Format:
-    * "parameterName" : {
-    *    "required" : {bool},  // default = false
-    *    "validation" : {fn|obj},
-    *                   {fn} a function(value) that returns true/false if
-    *                        the value is valid.
-    *                   {obj}: .type: {string} the data type
-    *                                 [ "string", "uuid", "email", "number", ... ]
-    * }
-    */
-   inputValidation: {
-      // uuid: {
-      //    required: true,
-      //    validation: { type: "uuid" }
-      // }
    }
 };

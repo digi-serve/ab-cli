@@ -11,6 +11,7 @@ var inputParams = {
    /*    "email": { string:{ email: { allowUnicode: true }}, required:true }   */
    /*                -> NOTE: put .string  before .required                    */
    /*    "param": { required: true } // NOTE: param Joi.any().required();      */
+   /*    "param": { optional: true } // NOTE: param Joi.any().optional();      */
 };
 // { key : {validationObj} }
 //   key: the name of the input parameter passed into the api
@@ -69,7 +70,6 @@ module.exports = function(req, res) {
          res.ab.error(err);
          return;
       }
-      req.ab.performance.log();
       res.ab.success(results);
    });
 };

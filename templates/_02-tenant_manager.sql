@@ -1,3 +1,3 @@
-INSERT INTO `site_user` (`uuid`, `username`, `password`, `salt`, `email`, `isActive`, `lastLogin`, `failedLogins`, `languageCode`, `id`, `createdAt`, `updatedAt`)
+INSERT INTO `SITE_USER` (`uuid`, `created_at`, `updated_at`, `properties`, `failedLogins`, `lastLogin`, `isActive`, `sendEmailNotifications`, `image_id`, `username`, `password`, `salt`, `email`, `languageCode`)
 VALUES
-    ('<%=uuid%>','<%=username%>','<%=password%>','<%=salt%>','<%=email%>',1,NULL,0,'en',1,NULL,NULL);
+  ('<%=uuid%>',now(),now(),NULL,NULL,NULL,1,1,'','<%=username%>','<%=password%>','<%=salt%>','<%=email%>','en');

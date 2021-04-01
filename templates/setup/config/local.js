@@ -38,6 +38,15 @@ module.exports = {
    /* end datastores */
 
    /**
+    * appbuilder
+    * service for managing our multi-tenant aware AB requests
+    */
+   appbuilder: {
+      enable: true
+   },
+   /* end appbuilder */
+
+   /**
     * bot_manager:
     * define the connections between our bot_manager and the host command
     * processor.
@@ -57,11 +66,29 @@ module.exports = {
    /* end file_processor */
 
    /**
+    * log_manager
+    * service for managing our various logs
+    */
+   log_manager: {
+      enable: true
+   },
+   /* end log_manager */
+
+   /**
     * notification_email
     * our smtp email service
     */
    notification_email: {},
    /* end notification_email */
+
+   /**
+    * process_manager
+    * manages processes
+    */
+   process_manager: {
+      enable: true
+   },
+   /* end process_manager */
 
    /**
     * tenant_manager
@@ -87,15 +114,6 @@ module.exports = {
     */
    user_manager: {
       enable: true
-   },
-   /* end user_manager */
-
-   /**
-    * process_manager
-    * manages processes
-    */
-   process_manager: {
-      enable: true
    }
-   /* end process_manager */
+   /* end user_manager */
 };

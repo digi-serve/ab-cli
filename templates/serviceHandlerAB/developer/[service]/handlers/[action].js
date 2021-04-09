@@ -95,7 +95,9 @@ module.exports = {
             cb(null, { status: "success" });
          })
          .catch((err) => {
-            req.logError("ERROR:", err);
+            req.notify.developer(err, {
+               context: "Service:<%= key %>: Error initializing ABFactory"
+            });
             cb(err);
          });
    }

@@ -9,6 +9,7 @@
       - type: bind
         source: ./nginx/html
         target: /usr/share/nginx/html
+      - files:/data
       - type: bind
         source: ./assets
         target: /data/assets

@@ -60,7 +60,8 @@ module.exports = {
     */
    file_processor: {
       enable: true,
-      basePath: path.sep + path.join("data", "file_processor"),
+      basePath: path.sep + path.join("data"),
+      // final dest: /data/[tenant.ID]/file_processor/[file]
       uploadPath: "tmp"
    },
    /* end file_processor */

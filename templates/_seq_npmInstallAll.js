@@ -11,7 +11,7 @@ var fs = require("fs");
 var cwd = process.cwd();
 
 function runInstall(name, done) {
-   var command = `cd ${path.join(cwd, name)}; npm install`;
+   var command = `cd ${path.join(cwd, name)}; npm install --force`;
 
    /* var install = */ exec(command, function(error /*, stdout, stderr */) {
       if (error) {

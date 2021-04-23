@@ -11,9 +11,7 @@
       - type: bind
         source: ./developer/[name]
         target: /app
-      - type: bind
-        source: ./config/local.js
-        target: /app/config/local.js
+      - config:/app/config
     depends_on:
       - redis
     working_dir: /app

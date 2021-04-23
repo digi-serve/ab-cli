@@ -9,19 +9,11 @@
       - type: bind
         source: ./nginx/html
         target: /usr/share/nginx/html
+      - nginx_etc:/etc
       - files:/data
       - type: bind
         source: ./assets
         target: /data/assets
-      - type: bind
-        source: ./nginx/nginx.conf
-        target: /etc/nginx/nginx.conf
-      - type: bind
-        source: ./nginx/default.conf
-        target: /etc/nginx/conf.d/default.conf
-      - type: bind
-        source: ./nginx/ssl
-        target: /etc/ssl/certs
     depends_on:
       - api_sails
   #/nginx

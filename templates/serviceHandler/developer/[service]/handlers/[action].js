@@ -80,5 +80,5 @@ module.exports = {
 
        */
       cb(null, { status: "success" });
-   }
+   },
 };

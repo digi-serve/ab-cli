@@ -6,6 +6,6 @@
 module.exports = {
     keys: {
         ios: "..........",
-        android: "........."
-    }
+        android: ".........",
+    },
 };

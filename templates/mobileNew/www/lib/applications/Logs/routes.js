@@ -6,6 +6,6 @@
 export default [
     {
         path: "/log/",
-        componentUrl: "./lib/applications/Logs/templates/log.html"
-    }
+        componentUrl: "./lib/applications/Logs/templates/log.html",
+    },
 ];

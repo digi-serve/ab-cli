@@ -1,4 +1,3 @@
-
 //   ╔═╗╔═╗╦  ╦╔╗╔╔╦╗┬─┐┌─┐
 //   ║╣ ╚═╗║  ║║║║ ║ ├┬┘│
 //  o╚═╝╚═╝╩═╝╩╝╚╝ ╩ ┴└─└─┘
@@ -17,35 +16,33 @@
 // or could use some advice, come by https://sailsjs.com/support.
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 module.exports = {
-  "env": {
-    "node": true
-  },
+   env: {
+      node: true,
+   },
 
-  "parserOptions": {
-    "ecmaVersion": 8
-  },
+   parserOptions: {
+      ecmaVersion: 8,
+   },
 
-  // extending recommended config and config derived from eslint-config-prettier
-  extends: ["eslint:recommended", "prettier"],
+   // extending recommended config and config derived from eslint-config-prettier
+   extends: ["eslint:recommended", "prettier"],
 
-  // activating eslint-plugin-prettier (--fix stuff)
-  plugins: ["prettier"],
+   // activating eslint-plugin-prettier (--fix stuff)
+   plugins: ["prettier"],
 
-  rules: {
+   rules: {
+      // customizing prettier rules (unfortunately not many of them are customizable)
+      "prettier/prettier": [
+         "error",
+         {
+            arrowParens: "always",
+            endOfLine: "lf",
+            printWidth: 80,
+            tabWidth: 3,
+         },
+      ],
 
-    // customizing prettier rules (unfortunately not many of them are customizable)
-    "prettier/prettier": [
-
-      "error",
-      {
-        "arrowParens": "always",
-        "endOfLine": "lf",
-        "printWidth": 80,
-        "tabWidth": 3
-      }
-    ],
-
-    // eslint rule customization here:
-    "no-console": 0, // allow console.log() in our services
-  }
+      // eslint rule customization here:
+      "no-console": 0, // allow console.log() in our services
+   },
 };

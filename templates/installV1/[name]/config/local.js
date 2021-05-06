@@ -6,15 +6,15 @@ module.exports = {
          port: 3306,
          user: "root",
          password: "<%=dbPassword%>",
-         database: "site"
+         database: "site",
       },
       appBuilder: {
          adapter: null,
          host: null,
          user: null,
          password: null,
-         database: "appbuilder"
-      }
+         database: "appbuilder",
+      },
    },
    // connections:
    // Sails style DB connection settings
@@ -25,7 +25,7 @@ module.exports = {
          port: 3306,
          user: "root",
          password: "<%=dbPassword%>",
-         database: "appbuilder"
+         database: "appbuilder",
       },
       site: {
          adapter: "sails-mysql",
@@ -33,8 +33,8 @@ module.exports = {
          port: 3306,
          user: "root",
          password: "<%=dbPassword%>",
-         database: "site"
-      }
+         database: "site",
+      },
    },
 
    appbuilder: {
@@ -45,9 +45,9 @@ module.exports = {
          url: "http://localhost:1337",
          accessToken: "There is no spoon.",
          pollFrequency: 5000,
-         maxPacketSize: 1048576
+         maxPacketSize: 1048576,
       },
-      pathFiles: "data/app_builder"
+      pathFiles: "data/app_builder",
    },
    nodemailer: {
       default: "smtp",
@@ -55,8 +55,8 @@ module.exports = {
          type: "SMTP",
          host: "SMTP.HOST.ADDR",
          secureConnection: false,
-         port: 25
-      }
+         port: 25,
+      },
    },
    crontab: {},
 
@@ -69,14 +69,14 @@ module.exports = {
          type: "SMTP",
          host: "smtp.host.com",
          secureConnection: false,
-         port: 25
-      }
+         port: 25,
+      },
    },
    /* end notification_email */
 
    // process_manager
    // service for managing our process tasks
    process_manager: {
-      enable: true
-   }
+      enable: true,
+   },
 };

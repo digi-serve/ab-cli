@@ -30,7 +30,7 @@ function done(/* err */) {
 function runInstall(name) {
    var command = `cd ${path.join(cwd, name)}; npm install --force`;
    // console.log(command);
-   /* var install = */ exec(command, function(error /*, stdout, stderr */) {
+   /* var install = */ exec(command, function (error /*, stdout, stderr */) {
       if (error) {
          console.log(error.stack);
          console.log("Error code: " + error.code);

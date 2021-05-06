@@ -13,7 +13,7 @@
  * before()
  * process these BEFORE any tests are run.
  */
-before(function(done) {
+before(function (done) {
    // Increase the timeout for how long mocha should wait for tests to
    // complete.
    this.timeout(3000);
@@ -27,7 +27,7 @@ before(function(done) {
  * after()
  * process these AFTER all tests are run.
  */
-after(function(done) {
+after(function (done) {
    //
    // here you can clear fixtures, close connections, etc.
    //

@@ -11,9 +11,9 @@ export default {
         isOpen: false,
         searchText: "",
         sortDirection: "asc",
-        isGroup: false
+        isGroup: false,
     },
     dataCollections: [],
     objects: [],
-    queries: []
+    queries: [],
 };

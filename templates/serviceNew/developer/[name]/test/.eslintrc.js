@@ -1,13 +1,13 @@
 module.exports = {
-  "env": {
-    "mocha": true
-  },
-  "rules": {
-    "no-unused-vars": [
-      "error",
-      {
-        "varsIgnorePattern": "should|expect"
-      }
-    ]
-  }
-}
+   env: {
+      mocha: true,
+   },
+   rules: {
+      "no-unused-vars": [
+         "error",
+         {
+            varsIgnorePattern: "should|expect",
+         },
+      ],
+   },
+};

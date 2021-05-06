@@ -6,10 +6,10 @@
 export default [
     {
         path: "/nav/",
-        componentUrl: "./lib/applications/navMenu/templates/nav.html"
+        componentUrl: "./lib/applications/navMenu/templates/nav.html",
     },
     {
         path: "/nav/lock/",
-        componentUrl: "./lib/applications/navMenu/templates/nav-lock.html"
-    }
+        componentUrl: "./lib/applications/navMenu/templates/nav-lock.html",
+    },
 ];

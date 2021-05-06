@@ -73,9 +73,9 @@ Available commands:
 
 `);
    console.log(
-      `For more info on a specific command type: ${chalk.green(
-         "appbuilder [command]"
-      ) + chalk.yellow.bold(" --help ")}`
+      `For more info on a specific command type: ${
+         chalk.green("appbuilder [command]") + chalk.yellow.bold(" --help ")
+      }`
    );
    console.log(`
 

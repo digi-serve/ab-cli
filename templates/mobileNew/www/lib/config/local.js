@@ -8,26 +8,26 @@ module.exports = {
         maID: "<%= appID %>",
         networkType: "<%= networkType %>",
         urlCoreServer: "<%= networkCoreURL %>",
-        urlRelayServer: "<%= networkRelayURL %>"
+        urlRelayServer: "<%= networkRelayURL %>",
     },
     codepush: {
         keys: {
             ios: "<%= codepushKeyIOS %>",
-            android: "<%= codepushKeyAndroid %>"
-        }
+            android: "<%= codepushKeyAndroid %>",
+        },
     },
     countly: {
         url: "<%= countlyURL %>",
-        appKey: "<%= countlyAppKey %>"
+        appKey: "<%= countlyAppKey %>",
     },
     onesignal: {
-        appID: "<%= onesignalAppID %>"
+        appID: "<%= onesignalAppID %>",
     },
     platform: {
         encryptedStorage: true,
-        passwordProtected: true
+        passwordProtected: true,
     },
     sentryio: {
-        dsn: "<%= sentryDSN %>"
-    }
+        dsn: "<%= sentryDSN %>",
+    },
 };

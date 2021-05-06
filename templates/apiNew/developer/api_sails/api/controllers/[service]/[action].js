@@ -35,7 +35,7 @@ var inputParams = {
 //        (see https://joi.dev/api)
 
 // make sure our BasePath is created:
-module.exports = function(req, res) {
+module.exports = function (req, res) {
    // Package the Find Request and pass it off to the service
 
    req.ab.log(`<%= service %>::<%= action %>`);

@@ -85,13 +85,13 @@ _AllQueries.forEach((obj) => {
 
 // return them here:
 export default {
-    getApplication: function(ID) {
+    getApplication: function (ID) {
         return _AllApplications.find((app) => {
             return app.id == ID || app.name == ID;
         });
     },
 
-    getDefault: function() {
+    getDefault: function () {
         return __ContainerApp;
-    }
+    },
 };

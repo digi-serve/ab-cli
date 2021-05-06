@@ -68,7 +68,7 @@ module.exports = {
         /**
          * userData: the route that returns information about this user
          */
-        userData: "/site/user/data"
+        userData: "/site/user/data",
     },
 
     /**
@@ -81,5 +81,5 @@ module.exports = {
      * urlPublic Server
      * the complete connection url to access the Public Server.
      */
-    urlRelayServer: "http://localhost:1337"
+    urlRelayServer: "http://localhost:1337",
 };

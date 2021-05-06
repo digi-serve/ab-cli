@@ -30,7 +30,7 @@ if (attempt >= 3) {
 //
 var app = express();
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
         "Access-Control-Allow-Headers",
@@ -50,7 +50,7 @@ app.listen(9889, () => {
     console.log("Static webserver on 9889");
 });
 
-app.post("/log", function(req, res) {
+app.post("/log", function (req, res) {
     console.log("body:", req.body.message);
 
     res.send({ status: "ok" });
@@ -59,10 +59,10 @@ app.post("/log", function(req, res) {
 var os = require("os");
 var ifaces = os.networkInterfaces();
 
-Object.keys(ifaces).forEach(function(ifname) {
+Object.keys(ifaces).forEach(function (ifname) {
     var alias = 0;
 
-    ifaces[ifname].forEach(function(iface) {
+    ifaces[ifname].forEach(function (iface) {
         if ("IPv4" !== iface.family || iface.internal !== false) {
             // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
             return;

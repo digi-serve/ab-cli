@@ -18,7 +18,7 @@ var config = {
     appbuilder: appbuilder,
     codepush: codepush,
     platform: platform,
-    sentryio: sentryio
+    sentryio: sentryio,
 };
 
 // now combine our default configs into our local

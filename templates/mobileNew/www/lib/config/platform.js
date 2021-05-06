@@ -16,5 +16,5 @@ module.exports = {
      * passwordProtection  {bool}  [true, false]
      * Do we need to password protect the application?
      */
-    passwordProtected: true
+    passwordProtected: true,
 };

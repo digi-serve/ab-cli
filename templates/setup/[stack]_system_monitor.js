@@ -131,7 +131,7 @@ function checkRunning() {
 function createServer(socket) {
    console.log("Creating server.");
    var server = net
-      .createServer(function(stream) {
+      .createServer(function (stream) {
          console.log("Connection acknowledged.");
          currStream = stream;
 
@@ -141,13 +141,13 @@ function createServer(socket) {
          // An object is better than an array for these.
          var self = Date.now();
          connections[self] = stream;
-         stream.on("end", function() {
+         stream.on("end", function () {
             console.log("Client disconnected.");
             delete connections[self];
          });
 
          // Messages are buffers. use toString
-         stream.on("data", function(msg) {
+         stream.on("data", function (msg) {
             msg = msg.toString();
 
             console.log("Client:", msg);
@@ -174,7 +174,7 @@ function createServer(socket) {
             }
          });
 
-         stream.on("error", function(err) {
+         stream.on("error", function (err) {
             console.log(".onError():", err);
             if (currStream == stream) {
                currStream = null;
@@ -182,7 +182,7 @@ function createServer(socket) {
          });
       })
       .listen(socket)
-      .on("connection", function(/* socket */) {
+      .on("connection", function (/* socket */) {
          console.log("Client connected.");
       });
    return server;
@@ -190,7 +190,7 @@ function createServer(socket) {
 
 // manage unix socket:
 console.log("Checking for leftover socket.");
-fs.stat(SOCKETFILE, function(err /*, stats */) {
+fs.stat(SOCKETFILE, function (err /*, stats */) {
    if (err) {
       // start server
       console.log("No leftover socket found.");
@@ -199,7 +199,7 @@ fs.stat(SOCKETFILE, function(err /*, stats */) {
    }
    // remove file then start server
    console.log("Removing leftover socket.");
-   fs.unlink(SOCKETFILE, function(err) {
+   fs.unlink(SOCKETFILE, function (err) {
       if (err) {
          // This should never happen.
          console.error(err);

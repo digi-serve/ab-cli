@@ -1,4 +1,3 @@
-
 //   ╔═╗╔═╗╦  ╦╔╗╔╔╦╗┬─┐┌─┐
 //   ║╣ ╚═╗║  ║║║║ ║ ├┬┘│
 //  o╚═╝╚═╝╩═╝╩╝╚╝ ╩ ┴└─└─┘
@@ -17,44 +16,42 @@
 // or could use some advice, come by https://sailsjs.com/support.
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 module.exports = {
-  "env": {
-    "node": true,
-    "jquery": true
-  },
+    env: {
+        node: true,
+        jquery: true,
+    },
 
-  "parserOptions": {
-    "ecmaVersion": 8,
-    "sourceType": "module",
-    "allowImportExportEverywhere": true
-  },
+    parserOptions: {
+        ecmaVersion: 8,
+        sourceType: "module",
+        allowImportExportEverywhere: true,
+    },
 
-  // extending recommended config and config derived from eslint-config-prettier
-  extends: ["eslint:recommended", "prettier"],
+    // extending recommended config and config derived from eslint-config-prettier
+    extends: ["eslint:recommended", "prettier"],
 
-  globals: {
-    "_": "readonly",
-    "AB": "readonly",
-    "cordova" : "readonly",
-    "Countly" : "readonly",
-    "Framework7": "readonly"
-  },
+    globals: {
+        _: "readonly",
+        AB: "readonly",
+        cordova: "readonly",
+        Countly: "readonly",
+        Framework7: "readonly",
+    },
 
-  // activating eslint-plugin-prettier (--fix stuff)
-  plugins: ["prettier"],
+    // activating eslint-plugin-prettier (--fix stuff)
+    plugins: ["prettier"],
 
-  rules: {
+    rules: {
+        // customizing prettier rules (unfortunately not many of them are customizable)
+        "prettier/prettier": [
+            "error",
+            {
+                tabWidth: 4,
+                arrowParens: "always",
+            },
+        ],
 
-    // customizing prettier rules (unfortunately not many of them are customizable)
-    "prettier/prettier": [
-
-      "error",
-      {
-        "tabWidth": 4,
-        "arrowParens": "always"
-      }
-    ],
-
-    // eslint rule customization here:
-    "no-console": 0, // allow console.log() in our services
-  }
+        // eslint rule customization here:
+        "no-console": 0, // allow console.log() in our services
+    },
 };

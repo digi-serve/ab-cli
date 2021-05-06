@@ -24,7 +24,7 @@ module.exports = {
          port: 3306,
          user: "root",
          password: "root",
-         database: "appbuilder"
+         database: "appbuilder",
       },
       site: {
          adapter: "sails-mysql",
@@ -32,8 +32,8 @@ module.exports = {
          port: 3306,
          user: "root",
          password: "root",
-         database: "appbuilder-admin"
-      }
+         database: "appbuilder-admin",
+      },
    },
    /* end datastores */
 
@@ -42,7 +42,7 @@ module.exports = {
     * service for managing our multi-tenant aware AB requests
     */
    appbuilder: {
-      enable: true
+      enable: true,
    },
    /* end appbuilder */
 
@@ -59,7 +59,7 @@ module.exports = {
     * service for managing our multi-tenant aware AB requests
     */
    definition_manager: {
-      enable: true
+      enable: true,
    },
    /* end definition_manager */
 
@@ -71,7 +71,7 @@ module.exports = {
       enable: true,
       basePath: path.sep + path.join("data"),
       // final dest: /data/[tenant.ID]/file_processor/[file]
-      uploadPath: "tmp"
+      uploadPath: "tmp",
    },
    /* end file_processor */
 
@@ -80,7 +80,7 @@ module.exports = {
     * service for managing our various logs
     */
    log_manager: {
-      enable: true
+      enable: true,
    },
    /* end log_manager */
 
@@ -96,7 +96,7 @@ module.exports = {
     * manages processes
     */
    process_manager: {
-      enable: true
+      enable: true,
    },
    /* end process_manager */
 
@@ -109,7 +109,7 @@ module.exports = {
       // {bool} enable the tenant_manager service.
       // don't turn this off.  You wont like it if you turn it off.
 
-      siteTenantID: "admin"
+      siteTenantID: "admin",
       // {string} the uuid of what is considered the "Admin" Tenant.
       // this resolves to the Tenant Manager Site, and is established on
       // install.  It can be reconfigured ... but only if you know what
@@ -123,7 +123,7 @@ module.exports = {
     * manage the users withing a tenant
     */
    user_manager: {
-      enable: true
-   }
+      enable: true,
+   },
    /* end user_manager */
 };

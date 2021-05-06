@@ -55,6 +55,15 @@ module.exports = {
    /* end bot_manager */
 
    /**
+    * definition_manager
+    * service for managing our multi-tenant aware AB requests
+    */
+   definition_manager: {
+      enable: true
+   },
+   /* end definition_manager */
+
+   /**
     * file_processor
     * our file manager
     */

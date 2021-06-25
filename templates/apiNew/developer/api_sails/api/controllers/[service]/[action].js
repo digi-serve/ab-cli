@@ -49,7 +49,10 @@ module.exports = function (req, res) {
    //    if no values given, then req.allParams() are evaluated. In some cases
    //    you'll want to only require a certain subset of input values and then
    //    let the rest be evaluated by the destination service.
-   if (!req.ab.validateParameters(inputParams /*, false , valuesToCheck*/)) {
+   if (
+      !(req.ab.validUser(/* false */)) ||
+      !req.ab.validateParameters(inputParams /*, false , valuesToCheck*/)
+   ) {
       // an error message is automatically returned to the client
       // so be sure to return here;
       return;

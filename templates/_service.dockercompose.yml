@@ -2,7 +2,7 @@
 
   # #[name]: [description]
   # [name]:
-  #   image: skipdaddy/ab-[containerName]:<%=tag%>
+  #   image: digiserve/ab-[containerName]:<%=tag%>
   #   # ports:
   #   #   - "9229:9229"
   #   environment:

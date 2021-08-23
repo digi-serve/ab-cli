@@ -2,9 +2,6 @@
   #nginx setup
   web:
     image: nginx
-    ports:
-      - "<%=port%>:80"
-      - "443:443"
     volumes:
       - type: bind
         source: ./nginx/html

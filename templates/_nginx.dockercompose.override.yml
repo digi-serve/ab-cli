@@ -1,0 +1,6 @@
+
+  #nginx setup
+  web:
+    ports:
+      - "<%=port%>:80"
+      - "443:443"

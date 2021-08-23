@@ -3,8 +3,6 @@
   # #[name]: [description]
   # [name]:
   #   image: digiserve/ab-[containerName]:<%=tag%>
-  #   # ports:
-  #   #   - "9229:9229"
   #   environment:
   #    - COTE_DISCOVERY_REDIS_HOST=redis
   #   volumes:

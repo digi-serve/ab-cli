@@ -1,3 +1,5 @@
+![Tests](https://github.com/nh758/ab-cli/actions/workflows/test-install.yml/badge.svg)
+
 A command line helper for our AppBuilder development.
 
 # Installation

@@ -1,0 +1,69 @@
+name: Dev Install Test
+on:
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+jobs:
+  Dev-Install-Test:
+    name: Dev Install and Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # gh macos runnners does not come with docker, could not get it installed
+        # see: https://github.community/t/is-it-possible-to-install-and-configure-docker-on-macos-runner/16981/3
+        os: [ubuntu-latest, windows-latest] #,macos-latest]
+    steps:
+      # - name: Install Docker (Macos)
+      #   if: ${{ matrix.os == 'macos-latest'}}
+      #   run: |
+      #     brew install docker-machine docker
+      #     docker-machine create default
+      #     docker-machine env default
+      #     eval "$(docker-machine env default)"
+      #     docker ps
+
+      - name: Checkout ab-cli
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+
+      - name: Install npm packages
+        run: npm i
+
+      - name: Initialize docker swarm
+        run: docker swarm init --advertise-addr 127.0.0.1
+
+      - name: Install AppBuilder
+        run: npm run ci:dev-install
+
+      - name: Setup Test Stack
+        working-directory: ./ab-test
+        run: node ../index.js test setup ab
+
+      - name: Launch Main Stack
+        run: docker stack deploy -c docker-compose.dev.yml -c docker-compose.override.yml ab
+        working-directory: ./ab-test
+
+      - name: Launch Test Stack
+        working-directory: ./ab-test
+        run: node ../index.js test waitBoot ab
+
+      # - name: Test Main Stack (Cypress)
+      #   uses: cypress-io/github-action@v2
+      #   with:
+      #     working-directory: ./ab-test
+      #     project: ./test/e2e
+      #     config: baseUrl=http://localhost:80
+      #     wait-on: "http://localhost:80"
+      #     wait-on-timeout: 300
+
+      - name: Test the Test Stack (Cypress)
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: ./ab-test
+          project: ./test/e2e
+
+      - name: Take Down Main Stack
+        run: ./Down.sh
+        working-directory: ./ab-test

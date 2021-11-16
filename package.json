@@ -1,41 +1,42 @@
 {
-  "name": "ab-cli",
-  "version": "0.0.1",
-  "description": "A command line helper for our AppBuilder development.",
-  "main": "index.js",
-  "repository": "https://github.com/Hiro-Nakamura/ab-cli",
-  "author": "Johnny Hausman",
-  "license": "MIT",
-  "private": false,
-  "bin": {
-    "appbuilder": "index.js"
-  },
-  "dependencies": {
-    "async": "^2.6.3",
-    "axios": "^0.21.1",
-    "chalk": "^2.4.2",
-    "clear": "^0.1.0",
-    "cross-spawn": "^6.0.5",
-    "ejs": "^2.7.4",
-    "inquirer": "^6.2.1",
-    "junk": "^2.1.0",
-    "lodash": "^4.17.19",
-    "minimist": "^1.2.3",
-    "nanoid": "^2.1.11",
-    "progress": "^2.0.3",
-    "shelljs": "^0.8.4",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "eslint": "^7.22.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-prettier": "^3.3.1",
-    "prettier": "^2.1.2",
-    "write-file-trim": "^1.0.9"
-  },
-  "scripts": {
-    "test": "npm run lint && npm run custom-tests && echo 'Done'",
-    "lint": "eslint --fix . && echo '✅ Your .js files look good.'",
-    "custom-tests": "echo '(no custom tests yet)'"
-  }
+   "name": "ab-cli",
+   "version": "0.0.1",
+   "description": "A command line helper for our AppBuilder development.",
+   "main": "index.js",
+   "repository": "https://github.com/Hiro-Nakamura/ab-cli",
+   "author": "Johnny Hausman",
+   "license": "MIT",
+   "private": false,
+   "bin": {
+      "appbuilder": "index.js"
+   },
+   "dependencies": {
+      "async": "^2.6.3",
+      "axios": "^0.21.1",
+      "chalk": "^2.4.2",
+      "clear": "^0.1.0",
+      "cross-spawn": "^6.0.5",
+      "ejs": "^2.7.4",
+      "inquirer": "^6.2.1",
+      "junk": "^2.1.0",
+      "lodash": "^4.17.19",
+      "minimist": "^1.2.3",
+      "nanoid": "^2.1.11",
+      "progress": "^2.0.3",
+      "shelljs": "^0.8.4",
+      "uuid": "^8.3.2"
+   },
+   "devDependencies": {
+      "eslint": "^7.22.0",
+      "eslint-config-prettier": "^8.1.0",
+      "eslint-plugin-prettier": "^3.3.1",
+      "prettier": "^2.1.2",
+      "write-file-trim": "^1.0.9"
+   },
+   "scripts": {
+      "test": "npm run lint && npm run custom-tests && echo 'Done'",
+      "lint": "eslint --fix . && echo '✅ Your .js files look good.'",
+      "custom-tests": "echo '(no custom tests yet)'",
+      "ci:dev-install": "node index.js install ab-test --develop --port=80 --tag=develop --nginx.enable=true --ssl.none --bot.enable=false --smtp.enable=false --db.expose=false --db.password=root --db.encryption=false --stack=ab --tenant.username=admin --tenant.password=admin --tenant.email=neo@thematrix.com"
+   }
 }

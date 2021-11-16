@@ -1,5 +1,7 @@
 name: Dev Install Test
 on:
+  push:
+    branches: [master]
   pull_request:
     branches: [master]
   workflow_dispatch:
@@ -56,10 +58,6 @@ jobs:
         with:
           working-directory: ./ab-test
           project: ./test/e2e
-          # TEMP: Skip failing test
-          spec: |
-            ./test/e2e/cypress/integration/0001_portal_auth_login.js
-            ./test/e2e/cypress/integration/0002_portal_work.js
 
       - name: Take Down Test Stack
         run: node ../index.js test down ab
@@ -78,10 +76,6 @@ jobs:
           wait-on: "http://localhost:80"
           wait-on-timeout: 300
           env: stack=ab
-          # TEMP: Skip failing test
-          spec: |
-            ./test/e2e/cypress/integration/0001_portal_auth_login.js
-            ./test/e2e/cypress/integration/0002_portal_work.js
 
       - name: Take Down Main Stack
         run: ./Down.sh

@@ -26,4 +26,4 @@ See https://digi-serve.github.io/appbuilder_docs/develop/setup/Setup.html
 $ appbuilder prod2021 [target_directory]
 ```
 
-See also https://github.com/digi-serve/ab-production-stack
+See also https://github.com/appdevdesigns/ab-production-stack

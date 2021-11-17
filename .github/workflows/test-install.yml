@@ -57,6 +57,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: ./ab-test
+          config: responseTimeout=60000
           project: ./test/e2e
 
       - name: Take Down Test Stack
@@ -72,7 +73,7 @@ jobs:
         with:
           working-directory: ./ab-test
           project: ./test/e2e
-          config: baseUrl=http://localhost:80
+          config: baseUrl=http://localhost:80,responseTimeout=60000
           wait-on: "http://localhost:80"
           wait-on-timeout: 300
           env: stack=ab

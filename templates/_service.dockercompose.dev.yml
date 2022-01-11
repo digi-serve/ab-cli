@@ -5,6 +5,7 @@
     image: node
     environment:
       - COTE_DISCOVERY_REDIS_HOST=redis
+    hostname: [name]
     volumes:
       - type: bind
         source: ./developer/[name]

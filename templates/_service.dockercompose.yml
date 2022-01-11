@@ -5,6 +5,7 @@
   #   image: digiserve/ab-[containerName]:<%=tag%>
   #   environment:
   #    - COTE_DISCOVERY_REDIS_HOST=redis
+  #   hostname: [name]
   #   volumes:
   #     - config:/app/config
   #   depends_on:

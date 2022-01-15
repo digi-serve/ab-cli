@@ -23,7 +23,7 @@
       "minimist": "^1.2.3",
       "nanoid": "^2.1.11",
       "progress": "^2.0.3",
-      "shelljs": "^0.8.4",
+      "shelljs": "^0.8.5",
       "uuid": "^8.3.2"
    },
    "devDependencies": {

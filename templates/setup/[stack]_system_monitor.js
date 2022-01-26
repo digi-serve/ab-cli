@@ -4,6 +4,12 @@ const path = require("path");
 const shell = require("shelljs");
 // const async = require("async");
 const AB = require("ab-utils");
+const config = AB.config("bot_manager");
+// Don't run if bot is disabled
+if (!config.slackBot.enable) {
+   console.log("app_system_monitor: bot not enabled");
+   process.exit();
+}
 
 // Make sure we don't have another service already running:
 var lockFile = ".app_system_monitor";
@@ -46,7 +52,6 @@ var isReportRunning = false;
 // Net
 // Connections to the running bot_manager in our swarm.
 //
-const config = AB.config("bot_manager");
 var isSockConnection = true;
 var SOCKETFILE = "/tmp/ab.sock";
 var PORT = "1338";
@@ -322,7 +327,7 @@ function pullDockerUpdate(msg) {
 console.log("Monitoring Docker Containers:");
 console.log(servicesToWatch);
 
-if (!config.slackBot.enable) {
+if (!config.slackBot.enable || config.slackBot.type !== "Slack") {
    console.log("... slackBot connection DISABLED.");
 } else {
    servicesToWatch = lookupServices();

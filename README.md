@@ -5,9 +5,8 @@ A command line helper for our AppBuilder development.
 # Installation
 
 ```sh
-$ sudo npm install -g Hiro-Nakamura/ab-cli
+$ sudo npm install -g digi-serve/ab-cli
 ```
-
 
 # Usage
 
@@ -18,7 +17,6 @@ $ appbuilder install [target_directory] --develop --V1
 ```
 
 See https://digi-serve.github.io/appbuilder_docs/develop/setup/Setup.html
-
 
 ## Production Install
 

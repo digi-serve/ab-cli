@@ -11,7 +11,7 @@
       "appbuilder": "index.js"
    },
    "dependencies": {
-      "async": "^2.6.3",
+      "async": "^2.6.4",
       "axios": "^0.21.1",
       "chalk": "^2.4.2",
       "clear": "^0.1.0",

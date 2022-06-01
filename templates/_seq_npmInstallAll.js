@@ -5,15 +5,20 @@
 // It is intended to be used during the install process to perform an npm install
 // on each of the included projects.
 const { exec } = require("child_process");
-var path = require("path");
-var fs = require("fs");
+const path = require("path");
+const fs = require("fs");
 
-var cwd = process.cwd();
+const cwd = process.cwd();
 
 function runInstall(name, done) {
-   var command = `cd ${path.join(cwd, name)}; npm install --force`;
+   const workDirectory = path.join(cwd, name);
+   const commands = [`cd ${workDirectory}`, "npm install --force"];
+   const checkScript = require(path.join(workDirectory, "package.json")).scripts
+      .submoduleNPMInstall ?? null;
 
-   /* var install = */ exec(command, function (error /*, stdout, stderr */) {
+   if (checkScript) commands.push("npm run submoduleNPMInstall");
+
+   /* const install = */ exec(commands.join(" && "), function (error /*, stdout, stderr */) {
       if (error) {
          console.log(error.stack);
          console.log("Error code: " + error.code);
@@ -36,13 +41,13 @@ function runInstall(name, done) {
 }
 
 // find all directories that are NPM modules:
-var allfiles = fs.readdirSync(cwd);
-var files = [];
+const allfiles = fs.readdirSync(cwd);
+const files = [];
 
 // console.log(`${allfiles.length} files to scan ...`);
-for (var f in allfiles) {
-   var name = allfiles[f];
-   var stats = fs.statSync(path.resolve(cwd, name));
+for (const f in allfiles) {
+   const name = allfiles[f];
+   const stats = fs.statSync(path.resolve(cwd, name));
    if (stats.isDirectory()) {
       if (fs.existsSync(path.resolve(cwd, name, "package.json"))) {
          // this is a npm module, so init!
@@ -55,7 +60,7 @@ function doFile(files, cb) {
    if (files.length == 0) {
       cb();
    } else {
-      var file = files.shift();
+      const file = files.shift();
       console.log(`... service : ${file} `);
       runInstall(file, (err) => {
          if (err) {

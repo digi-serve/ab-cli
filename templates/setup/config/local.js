@@ -76,6 +76,15 @@ module.exports = {
    /* end bot_manager */
 
    /**
+    * custom_reports
+    * service for managing our multi-tenant aware AB requests
+    */
+   custom_reports: {
+      enable: true,
+   },
+   /* end custom_reports */
+
+   /**
     * definition_manager
     * service for managing our multi-tenant aware AB requests
     */

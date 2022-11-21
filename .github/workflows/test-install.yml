@@ -44,14 +44,23 @@ jobs:
 
       - name: Install AppBuilder
         run: npm run ci:dev-install
+        timeout-minutes: 120
+
+      # These next steps are to save our ablogs to file
+      - run: npm install pm2@latest -g
+      - name: Save Logs
+        run: pm2 start ./logs.js -- --toFile logs/ABServices.log
+        working-directory: ./ab-test
 
       - name: Setup Test Stack
         working-directory: ./ab-test
         run: node ../index.js test setup ab
+        timeout-minutes: 15
 
       - name: Launch Test Stack
         working-directory: ./ab-test
         run: npm run test:boot && node ../index.js test waitBoot ab
+        timeout-minutes: 15
 
       - name: Test the Test Stack (Cypress)
         uses: cypress-io/github-action@v2
@@ -68,6 +77,7 @@ jobs:
       - name: Launch Main Stack
         run: ./UP.sh -t -q
         working-directory: ./ab-test
+        timeout-minutes: 15
 
       - name: Test Main Stack (Cypress)
         uses: cypress-io/github-action@v2
@@ -83,3 +93,15 @@ jobs:
       - name: Take Down Main Stack
         run: ./Down.sh
         working-directory: ./ab-test
+
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: ./ab-test/test/e2e/cypress/screenshots
+
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: ABServices.log
+          path: ./ab-test/logs/ABServices.log

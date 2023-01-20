@@ -26,4 +26,8 @@ lib-cov
 node_modules/
 
 leftOffHere.txt
+
+# Install Test Directories
 ab-test/
+ti-*/
+test-*/

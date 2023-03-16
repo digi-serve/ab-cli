@@ -45,7 +45,7 @@ module.exports = {
       // of your users, forcing them to log in again.     
    },
    <% if (!develop) { %>
-   socket: {
+   sockets: {
       /**
        * @function beforeConnect
        * This allows all socket connections. It is recommended to customize

@@ -37,6 +37,30 @@ module.exports = {
    },
    /* end datastores */
 
+   /** Session */
+   session: {
+      secret: "<%=secret%>",
+      // Session secret is automatically generated during install.
+      // Replace at your own risk in production-- you will invalidate the cookies
+      // of your users, forcing them to log in again.     
+   },
+   <% if (!develop) { %>
+   sockets: {
+      /**
+       * @function beforeConnect
+       * This allows all socket connections. It is recommended to customize
+       * this in production or use `onlyAllowOrigins` instead.
+       * Sails won't lift in production mode without of if these set.
+       * see https://sailsjs.com/documentation/reference/configuration/sails-config-sockets#sails-config-sockets
+       */
+      beforeConnect: function (handshake, proceed) {
+         console.warn(
+            "Allowing all socket connections. This should be changed."
+         );
+         return proceed(undefined, true);
+      },
+   },
+   <% } %>  
    /**
     * CAS authentication
     */
@@ -44,7 +68,7 @@ module.exports = {
       enabled: process.env.CAS_ENABLED == "true" ? true : false,
       baseURL: process.env.CAS_BASE_URL,
       uuidKey: process.env.CAS_UUID_KEY,
-      siteURL: process.env.SITE_URL
+      siteURL: process.env.SITE_URL,
    },
 
    /**
@@ -55,7 +79,7 @@ module.exports = {
       domain: process.env.OKTA_DOMAIN,
       clientID: process.env.OKTA_CLIENT_ID,
       clientSecret: process.env.OKTA_CLIENT_SECRET,
-      siteURL: process.env.SITE_URL
+      siteURL: process.env.SITE_URL,
    },
 
    /**

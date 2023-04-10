@@ -16,7 +16,7 @@ jobs:
         # windows runner does not suppport linux containers
         # see:
         os: [ubuntu-latest] #, windows-latest] #,macos-latest]
-        node: [14, 16]
+        node: [16, 18]
     env:
          CYPRESS_RESPONSE_TIMEOUT: 200000
          CYPRESS_DEFAULT_COMMAND_TIMEOUT: 30000

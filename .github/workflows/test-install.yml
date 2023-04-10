@@ -81,7 +81,7 @@ jobs:
       - name: Wait for AB (Test Stack)
         uses: ifaxity/wait-on-action@v1
         with:
-          resource: http://localhost:8080
+          resource: http://localhost:8088
           timeout: 300000
 
       - name: Run Cypress Tests (Test Stack)

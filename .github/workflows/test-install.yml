@@ -16,7 +16,11 @@ jobs:
         # windows runner does not suppport linux containers
         # see:
         os: [ubuntu-latest] #, windows-latest] #,macos-latest]
-        node: [14, 16]
+        node: [16, 18]
+    env:
+         CYPRESS_RESPONSE_TIMEOUT: 200000
+         CYPRESS_DEFAULT_COMMAND_TIMEOUT: 30000
+         CYPRESS_RETRIES: 2
     steps:
       # - name: Install Docker (Macos)
       #   if: ${{ matrix.os == 'macos-latest'}}
@@ -45,6 +49,27 @@ jobs:
       - name: Install AppBuilder
         run: npm run ci:dev-install
 
+      # Give some time for the stack to come down fully
+      - run: sleep 15
+
+      - name: Launch Main Stack
+        run: ./UP.sh -t -q
+        working-directory: ./ab-test
+
+      - name: Wait for AB (Main Stack)
+        uses: ifaxity/wait-on-action@v1
+        with:
+          resource: http://localhost:80
+          timeout: 300000
+
+      - name: Run Cypress Tests (Main Stack)
+        run: npm run test:e2e:ab-runtime -- --browser chrome
+        working-directory: ./ab-test
+
+      - name: Take Down Main Stack
+        run: ./Down.sh
+        working-directory: ./ab-test
+
       - name: Setup Test Stack
         working-directory: ./ab-test
         run: node ../index.js test setup ab
@@ -53,33 +78,16 @@ jobs:
         working-directory: ./ab-test
         run: npm run test:boot && node ../index.js test waitBoot ab
 
-      - name: Test the Test Stack (Cypress)
-        uses: cypress-io/github-action@v2
+      - name: Wait for AB (Test Stack)
+        uses: ifaxity/wait-on-action@v1
         with:
-          working-directory: ./ab-test
-          config: responseTimeout=100000,defaultCommandTimeout=24000,retries=2
-          project: ./test/e2e
-          install: false
+          resource: http://localhost:8088
+          timeout: 300000
+
+      - name: Run Cypress Tests (Test Stack)
+        run: npm run test:e2e:ab-runtime -- --browser chrome
+        working-directory: ./ab-test
 
       - name: Take Down Test Stack
         run: node ../index.js test down ab
-        working-directory: ./ab-test
-
-      - name: Launch Main Stack
-        run: ./UP.sh -t -q
-        working-directory: ./ab-test
-
-      - name: Test Main Stack (Cypress)
-        uses: cypress-io/github-action@v2
-        with:
-          working-directory: ./ab-test
-          project: ./test/e2e
-          config: baseUrl=http://localhost:80,responseTimeout=100000,defaultCommandTimeout=24000,retries=2
-          wait-on: "http://localhost:80"
-          wait-on-timeout: 300
-          env: stack=ab
-          install: false
-
-      - name: Take Down Main Stack
-        run: ./Down.sh
         working-directory: ./ab-test

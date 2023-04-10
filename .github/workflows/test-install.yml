@@ -49,6 +49,9 @@ jobs:
       - name: Install AppBuilder
         run: npm run ci:dev-install
 
+      # Give some time for the stack to come down fully
+      - run: sleep 15
+
       - name: Launch Main Stack
         run: ./UP.sh -t -q
         working-directory: ./ab-test

@@ -1,0 +1,435 @@
+version: "3.9"
+
+volumes:
+  files:
+  mysql_data:
+  redis_data:
+  # clamav:
+
+networks:
+  default:
+    attachable: true
+
+services:
+  #nginx setup
+  web:
+    image: docker.io/digiserve/ab-web:$AB_WEB_VERSION
+    hostname: web
+    volumes:
+      - type: bind
+        source: ./nginx/html
+        target: /usr/share/nginx/html
+      - files:/data
+      - type: bind
+        source: ./developer/web/assets
+        target: /app/assets
+    depends_on:
+      - api_sails
+   #/nginx
+
+  #db: use Maria DB as our backend DB
+  db:
+    image: docker.io/digiserve/ab-db:$AB_DB_VERSION
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_PASSWORD # from .env
+    volumes:
+      - mysql_data:/var/lib/mysql
+    # on windows: use this command. (be sure to clear out mysql/data folder)
+    # command: mysqld --innodb-flush-method=littlesync --innodb-use-native-aio=OFF --log_bin=ON --wait-timeout=60 --interactive-timeout=60
+    ######
+    # when there is a problem with : Error: ER_CRASHED_ON_USAGE: Table 'AAAAAA' is marked as crashed and should be repaired
+    # this can happen with the alter table algorithm: try the safest(and slowest) COPY
+    command: ["mysqld", "--alter-algorithm=copy" , "--wait-timeout=60", "--interactive-timeout=60"]
+  #/db
+
+
+  #redis: use redis to allow cote services to find each other across a swarm
+  redis:
+    image: redis
+    hostname: redis
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+  #/redis
+
+
+  #api_sails: our API end point
+  api_sails:
+    image: node
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+      - NODE_ENV=development
+      - MYSQL_PASSWORD
+      # - MYSQL_HOST
+      # - MYSQL_PORT
+      # - MYSQL_USER
+      # - MYSQL_DBPREFIX
+      # - MYSQL_DBADMIN
+      # - MYSQL_POOL_MAX
+      # - MYSQL_POOL_ACQUIRE_TIMEOUT
+      - CAS_ENABLED
+      - CAS_BASE_URL
+      - CAS_UUID_KEY
+      - SITE_URL
+      - OKTA_ENABLED
+      - OKTA_DOMAIN
+      - OKTA_CLIENT_ID
+      - OKTA_CLIENT_SECRET
+      # - FILE_PROCESSOR_PATH
+      # - FILE_PROCESSOR_UPLOAD_DIR
+      # - FILE_PROCESSOR_MAXBYTES
+      - RELAY_ENABLED
+      - RELAY_SERVER_TOKEN
+      - SAILS_SESSION_SECRET
+    volumes:
+      - type: bind
+        source: ./developer/api_sails
+        target: /app
+      - type: bind
+        source: ./logs/appbuilder/
+        target: /var/log/appbuilder/
+      - files:/data
+    depends_on:
+      - redis
+    working_dir: /app
+    command: [ "node", "--inspect=0.0.0.0:9229", "app_waitMysql.js" ]
+  #/api_sails
+
+
+  #appbuilder: (AppBuilder) A multi-tenant aware service to process our AppBuilder requests.
+  appbuilder:
+    image: node
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+      - MYSQL_PASSWORD
+      # - MYSQL_HOST
+      # - MYSQL_PORT
+      # - MYSQL_USER
+      # - MYSQL_DBPREFIX
+      # - MYSQL_DBADMIN
+      # - MYSQL_POOL_MAX
+      # - MYSQL_POOL_ACQUIRE_TIMEOUT
+      - APPBUILDER_ENABLE
+      - CIRCUITBREAKER_TIMEOUT
+      - CIRCUITBREAKER_THRESHHOLD
+      - CIRCUITBREAKER_RESET
+    hostname: appbuilder
+    volumes:
+      - type: bind
+        source: ./developer/appbuilder
+        target: /app
+    depends_on:
+      - redis
+    working_dir: /app
+    # command: npm run dev  # <-- runs nodemon and auto starts when code changes
+    command: [ "node", "--inspect=0.0.0.0:9229", "app.js" ]
+  #/appbuilder
+
+
+  #bot_manager: our #slack bot service
+  bot_manager:
+    image: node
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+      # - BOT_DOCKERHUB_ENABLE
+      # - BOT_DOCKERHUB_PORT
+      # - BOT_SLACKBOT_ENABLE
+      # - BOT_SLACKBOT_TOKEN
+      # - BOT_SLACKBOT_NAME
+      # - BOT_SLACKBOT_CHANNEL
+      # - BOT_SLACKBOT_PORT
+      # - BOT_SLACKBOT_SIGNINGSECRET
+      # - BOT_SLACKBOT_SOCKETMODE
+      # - BOT_SLACKBOT_APPTOKEN
+      # - BOT_TRIGGERS
+      # - BOT_COMMANDS
+      # - BOT_HOST_SOCK_PATH
+      # - BOT_HOST_TCP_PORT
+      # - BOT_HOST_TCP_ACCESSTOKEN
+    volumes:
+      - type: bind
+        source: ./developer/bot_manager
+        target: /app
+      # sharing .sock files currently don't work on docker-for-mac:
+      # https://github.com/docker/for-mac/issues/483
+      # For a Mac host, configure config/local.js to hostConnection.tcp
+      # but it doesn't hurt to include the /tmp dir for all platforms.
+      - type: bind
+        source: /tmp
+        target: /tmp
+    depends_on:
+      - redis
+    working_dir: /app
+    command: [ "node", "--inspect=0.0.0.0:9229", "app.js" ]
+  #/bot_manager
+
+
+  #custom_reports: A service for custom reports.
+  custom_reports:
+    image: node
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+      - MYSQL_PASSWORD
+      # - MYSQL_HOST
+      # - MYSQL_PORT
+      # - MYSQL_USER
+      # - MYSQL_DBPREFIX
+      # - MYSQL_DBADMIN
+      # - MYSQL_POOL_MAX
+      # - MYSQL_POOL_ACQUIRE_TIMEOUT
+      - CUSTOM_REPORTS_ENABLED
+    hostname: custom_reports
+    volumes:
+      - type: bind
+        source: ./developer/custom_reports
+        target: /app
+    depends_on:
+      - redis
+    working_dir: /app
+    command: [ "node", "--inspect=0.0.0.0:9229", "app.js" ]
+  #/custom_reports
+
+
+  #definition_manager: (AppBuilder) A service to manage the definitions for a running AppBuilder platform.
+  definition_manager:
+    image: node
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+      - MYSQL_PASSWORD
+      # - MYSQL_HOST
+      # - MYSQL_PORT
+      # - MYSQL_USER
+      # - MYSQL_DBPREFIX
+      # - MYSQL_DBADMIN
+      # - MYSQL_POOL_MAX
+      # - MYSQL_POOL_ACQUIRE_TIMEOUT
+      - DEFINITION_MANAGER_ENABLE
+    hostname: definition_manager
+    volumes:
+      - type: bind
+        source: ./developer/definition_manager
+        target: /app
+    depends_on:
+      - redis
+    working_dir: /app
+    command: [ "node", "--inspect=0.0.0.0:9229", "app.js" ]
+  #/definition_manager
+
+
+  #file_processor: A service to manage uploaded files.
+  file_processor:
+    image: node
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+      - MYSQL_PASSWORD
+      # - MYSQL_HOST
+      # - MYSQL_PORT
+      # - MYSQL_USER
+      # - MYSQL_DBPREFIX
+      # - MYSQL_DBADMIN
+      # - MYSQL_POOL_MAX
+      # - MYSQL_POOL_ACQUIRE_TIMEOUT
+      - FILE_PROCESSOR_ENABLE
+      # - FILE_PROCESSOR_PATH
+      # - FILE_PROCESSOR_UPLOAD_DIR
+      # - FILE_PROCESSOR_MAXBYTES
+      # - CLAMAV_ENABLED
+    hostname: file_processor
+    volumes:
+      - type: bind
+        source: ./developer/file_processor
+        target: /app
+      - files:/data
+    depends_on:
+      - redis
+    working_dir: /app
+    command: [ "node", "--inspect=0.0.0.0:9229", "app.js" ]
+  #/file_processor
+
+
+  #log_manager: (AppBuilder) A log manager for various AB operations
+  log_manager:
+    image: node
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+      - MYSQL_PASSWORD
+      # - MYSQL_HOST
+      # - MYSQL_PORT
+      # - MYSQL_USER
+      # - MYSQL_DBPREFIX
+      # - MYSQL_DBADMIN
+      # - MYSQL_POOL_MAX
+      # - MYSQL_POOL_ACQUIRE_TIMEOUT
+      - SENTRY_ENABLED
+      - SENTRY_DSN
+      - SENTRY_SAMPLE_RATE
+      - SENTRY_SERVER_NAME
+      # - SENTRY_CONFIG
+    hostname: log_manager
+    volumes:
+      - type: bind
+        source: ./developer/log_manager
+        target: /app
+    depends_on:
+      - redis
+    working_dir: /app
+    command: [ "node", "--inspect=0.0.0.0:9229", "app.js" ]
+  #/log_manager
+
+
+  #notification_email: an smtp email service
+  notification_email:
+    image: node
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+      - MYSQL_PASSWORD
+      # - MYSQL_HOST
+      # - MYSQL_PORT
+      # - MYSQL_USER
+      # - MYSQL_DBPREFIX
+      # - MYSQL_DBADMIN
+      # - MYSQL_POOL_MAX
+      # - MYSQL_POOL_ACQUIRE_TIMEOUT
+      - NOTIFICATION_EMAIL_ENABLE
+      - NOTIFICATION_EMAIL_DEFAULT
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_SECURE
+      # Default Auth Method is "login"
+      # specify the user/password
+      - SMTP_USER
+      - SMTP_PASSWORD
+      # For more complicated methods:
+      # - SMTP_AUTH="{ login config }"
+    hostname: notification_email
+    volumes:
+      - type: bind
+        source: ./developer/notification_email
+        target: /app
+    depends_on:
+      - redis
+    working_dir: /app
+    command: [ "node", "--inspect=0.0.0.0:9229", "app.js" ]
+  #/notification_email
+
+
+  #process_manager: (AppBuilder) a micro service to manage our process tasks
+  process_manager:
+    image: node
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+      - MYSQL_PASSWORD
+      # - MYSQL_HOST
+      # - MYSQL_PORT
+      # - MYSQL_USER
+      # - MYSQL_DBPREFIX
+      # - MYSQL_DBADMIN
+      # - MYSQL_POOL_MAX
+      # - MYSQL_POOL_ACQUIRE_TIMEOUT
+    hostname: process_manager
+    volumes:
+      - type: bind
+        source: ./developer/process_manager
+        target: /app
+    depends_on:
+      - redis
+    working_dir: /app
+    command: [ "node", "--inspect=0.0.0.0:9229", "app.js" ]
+  #/process_manager
+
+
+  #relay: (Appbuilder} A service to handle the communications with our relay server.
+  relay:
+    image: node
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+      - MYSQL_PASSWORD
+      # - MYSQL_HOST
+      # - MYSQL_PORT
+      # - MYSQL_USER
+      # - MYSQL_DBPREFIX
+      # - MYSQL_DBADMIN
+      # - MYSQL_POOL_MAX
+      # - MYSQL_POOL_ACQUIRE_TIMEOUT
+      - RELAY_ENABLE
+      - RELAY_SERVER_URL
+      - RELAY_SERVER_TOKEN
+      - RELAY_POLL_FREQUENCY
+      - RELAY_MAX_PACKET_SIZE
+      - PWA_URL
+    hostname: relay
+    volumes:
+      - type: bind
+        source: ./developer/relay
+        target: /app
+    depends_on:
+      - redis
+    working_dir: /app
+    command: [ "node", "--inspect=0.0.0.0:9229", "app.js" ]
+  #/relay
+
+
+  #tenant_manager: (AppBuilder) A service to manage the site's tenants
+  tenant_manager:
+    image: node
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+      - MYSQL_PASSWORD
+      # - MYSQL_HOST
+      # - MYSQL_PORT
+      # - MYSQL_USER
+      # - MYSQL_DBPREFIX
+      # - MYSQL_DBADMIN
+      # - MYSQL_POOL_MAX
+      # - MYSQL_POOL_ACQUIRE_TIMEOUT
+      - TENANT_MANAGER_ENABLE
+      # - TENANT_MANAGER_TENANT_ID
+    hostname: tenant_manager
+    volumes:
+      - type: bind
+        source: ./developer/tenant_manager
+        target: /app
+    depends_on:
+      - redis
+    working_dir: /app
+    command: [ "node", "--inspect=0.0.0.0:9229", "app.js" ]
+  #/tenant_manager
+
+
+  #user_manager: (AppBuilder) A microservice for managing Users
+  user_manager:
+    image: node
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+      - MYSQL_PASSWORD
+      # - MYSQL_HOST
+      # - MYSQL_PORT
+      # - MYSQL_USER
+      # - MYSQL_DBPREFIX
+      # - MYSQL_DBADMIN
+      # - MYSQL_POOL_MAX
+      # - MYSQL_POOL_ACQUIRE_TIMEOUT
+      - USER_MANAGER_ENABLE
+      - USER_MANAGER_MAX_FAILED_LOGINS
+    hostname: user_manager
+    volumes:
+      - type: bind
+        source: ./developer/user_manager
+        target: /app
+    depends_on:
+      - redis
+    working_dir: /app
+    command: [ "node", "--inspect=0.0.0.0:9229", "app.js" ]
+  #/user_manager
+
+
+#  #watchtower: monitor and update our running containers
+#  watchtower:
+#    image: v2tec/watchtower
+#    volumes:
+#      # - /var/run/docker.sock:/var/run/docker.sock
+#      - type: bind
+#        source: /var/run/docker.sock
+#        target: /var/run/docker.sock
+#    command: --interval 10 --debug
+#  #/watchtower

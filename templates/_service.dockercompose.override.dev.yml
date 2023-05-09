@@ -4,4 +4,6 @@
   # [name]:
   #   ports:
   #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config
   #/[name]

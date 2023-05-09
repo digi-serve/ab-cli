@@ -97,40 +97,41 @@ var parseLine = /(\w+)\s+(\w+)\s+\w+\s+0\/\d+\s+([\w\/:-]+)/g; // eslint-disable
 function checkRunning() {
    // make sure our connection to our botManager is ok before trying:
    if (currStream && !currStream.destroyed) {
-      shell.exec("docker service ls", { silent: true }, (
-         code,
-         stdout /* , stderr */
-      ) => {
-         if (code == 0) {
-            if (stdout.search(downCheck) == -1) {
-               if (isReportRunning) {
-                  console.log("... looks like server is running.");
-                  if (currStream) {
-                     currStream.write("__running");
-                  }
+      shell.exec(
+         "docker service ls",
+         { silent: true },
+         (code, stdout /* , stderr */) => {
+            if (code == 0) {
+               if (stdout.search(downCheck) == -1) {
+                  if (isReportRunning) {
+                     console.log("... looks like server is running.");
+                     if (currStream) {
+                        currStream.write("__running");
+                     }
 
-                  isReportRunning = false;
-               }
-            } else {
-               var lines = stdout.split("\n");
-               var offlineContainers = [];
-               lines.forEach((l) => {
-                  var match = parseLine.exec(l);
-                  if (match) {
-                     offlineContainers.push(`${match[2]}`); // ${match[2]}(${match[3]})
+                     isReportRunning = false;
                   }
-               });
-               if (offlineContainers.length > 0) {
-                  if (currStream) {
-                     currStream.write(
-                        "__offline:" + offlineContainers.join(",")
-                     );
+               } else {
+                  var lines = stdout.split("\n");
+                  var offlineContainers = [];
+                  lines.forEach((l) => {
+                     var match = parseLine.exec(l);
+                     if (match) {
+                        offlineContainers.push(`${match[2]}`); // ${match[2]}(${match[3]})
+                     }
+                  });
+                  if (offlineContainers.length > 0) {
+                     if (currStream) {
+                        currStream.write(
+                           "__offline:" + offlineContainers.join(",")
+                        );
+                     }
+                     isReportRunning = true;
                   }
-                  isReportRunning = true;
                }
             }
          }
-      });
+      );
    } else {
       console.log("connection to botManager is not active.");
    }
@@ -237,7 +238,7 @@ var serviceNames = {};
 // a quick lookup hash with the names of the current docker stack + service
 // name for each of our servicesToWatch.
 
-var stack = "ab";
+var stack = "<%= stack %>";
 // {string}
 // the docker stack reference for this running stack.
 

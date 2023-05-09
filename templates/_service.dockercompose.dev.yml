@@ -10,10 +10,8 @@
       - type: bind
         source: ./developer/[name]
         target: /app
-      - config:/app/config
     depends_on:
       - redis
-      - config
     working_dir: /app
     command: [ "node", "--inspect=0.0.0.0:9229", "app.js" ]
   #/[name]

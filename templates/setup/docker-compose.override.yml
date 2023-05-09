@@ -1,0 +1,143 @@
+version: "3.9"
+
+services:
+
+  # # common settings for all our services:
+  # common_config:
+  #   deploy:
+  #     replicas: 1
+  #     update_config:
+  #       parallelism: 1
+  #       order: start-first
+  #       failure_action: rollback
+  #       delay: 10s
+  #     rollback_config:
+  #       parallelism: 0
+  #       order: stop-first
+  #     restart_policy:
+  #       condition: any
+  #       delay: 5s
+  #       max_attempts: 3
+  #       window: 120s
+
+  #nginx setup
+  web:
+    ports:
+      - "<%=port%>:80"
+      - "443:443"
+    # extends:
+    #   service: common_config
+
+
+  #db: use Maria DB as our backend DB
+  <%= dbExpose ? "" : "# " %>db:
+  <%= dbExpose ? "" : "# " %>  ports:
+  <%= dbExpose ? "" : "# " %>    - "<%=dbPort%>:3306"
+  <%= dbExpose ? "" : "# " %>  # extends:
+  <%= dbExpose ? "" : "# " %>  #   service: common_config
+
+
+  # #redis: use redis to allow cote services to find each other across a swarm
+  # redis:
+  #   ports:
+  #    - 6379:6379
+  #   # extends:
+  #   #   service: common_config
+
+
+  # #api_sails: our API end point
+  # api_sails:
+  #   ports:
+  #     - "1337:1337"
+  #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config
+
+
+  # #appbuilder: (AppBuilder) A multi-tenant aware service to process our AppBuilder requests.
+  # appbuilder:
+  #   ports:
+  #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config
+
+
+  # #bot_manager: our #slack bot service
+  # bot_manager:
+  #   ports:
+  #     - "3000:3000"
+  #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config
+
+
+  # #custom_reports: (AppBuilder) A microservice for Custom Reports
+  # custom_reports:
+  #   ports:
+  #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config
+
+
+  # #definition_manager: (AppBuilder) A service to manage the definitions for a running AppBuilder platform.
+  # definition_manager:
+  #   ports:
+  #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config
+
+
+  # #file_processor: A service to manage uploaded files.
+  # file_processor:
+  #   ports:
+  #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config
+
+
+  # #log_manager: (AppBuilder) A log manager for various AB operations
+  # log_manager:
+  #   ports:
+  #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config
+
+
+  # #notification_email: an smtp email service
+  # notification_email:
+  #   ports:
+  #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config
+
+
+  # #process_manager: (AppBuilder) a micro service to manage our process tasks
+  # process_manager:
+  #   ports:
+  #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config
+
+
+  # #relay: (AppBuilder) a service to manage our communications with our relay server
+  # relay:
+  #   ports:
+  #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config
+
+
+  # #tenant_manager: (AppBuilder) A service to manage the site's tenants
+  # tenant_manager:
+  #   ports:
+  #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config
+
+
+  # #user_manager: (AppBuilder) A microservice for managing Users
+  # user_manager:
+  #   ports:
+  #     - "9229:9229"
+  #   # extends:
+  #   #   service: common_config

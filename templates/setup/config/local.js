@@ -39,11 +39,12 @@ module.exports = {
 
    /** Session */
    session: {
-      secret: "<%=secret%>",
+      secret: "<%=sailsSessionSecret%>",
       // Session secret is automatically generated during install.
       // Replace at your own risk in production-- you will invalidate the cookies
       // of your users, forcing them to log in again.     
    },
+
    <% if (!develop) { %>
    sockets: {
       /**
@@ -60,7 +61,8 @@ module.exports = {
          return proceed(undefined, true);
       },
    },
-   <% } %>  
+   <% } %>
+
    /**
     * CAS authentication
     */

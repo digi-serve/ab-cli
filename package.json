@@ -37,7 +37,6 @@
    "scripts": {
       "test": "npm run lint && npm run custom-tests && echo 'Done'",
       "lint": "eslint --fix . && echo '✅ Your .js files look good.'",
-      "custom-tests": "echo '(no custom tests yet)'",
-      "ci:dev-install": "node index.js install ab --stack=ab --develop --port=80 --tag=develop --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:80 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:80"
+      "custom-tests": "echo '(no custom tests yet)'"
    }
 }

@@ -47,7 +47,7 @@ jobs:
         run: docker swarm init --advertise-addr 127.0.0.1
 
       - name: Install AppBuilder
-        run: npm run ci:dev-install
+        run: npm run ci:dev-install -- --runtime=${{ github.head_ref }}
 
       # Give some time for the stack to come down fully
       - run: sleep 15

@@ -238,7 +238,7 @@ var serviceNames = {};
 // a quick lookup hash with the names of the current docker stack + service
 // name for each of our servicesToWatch.
 
-var stack = "<%= stack %>";
+var stack = process.env.STACKNAME || "<%= stack %>";
 // {string}
 // the docker stack reference for this running stack.
 

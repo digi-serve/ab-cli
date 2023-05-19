@@ -39,7 +39,7 @@ module.exports = {
 
    /** Session */
    session: {
-      secret: "<%=sailsSessionSecret%>",
+      secret: process.env.SAILS_SESSION_SECRET || "<%=sailsSessionSecret%>",
       // Session secret is automatically generated during install.
       // Replace at your own risk in production-- you will invalidate the cookies
       // of your users, forcing them to log in again.     

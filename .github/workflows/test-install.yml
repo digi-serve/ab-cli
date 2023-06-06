@@ -47,7 +47,7 @@ jobs:
         run: docker swarm init --advertise-addr 127.0.0.1
 
       - name: Install AppBuilder
-        run: node index.js install ab-test --stack=ab-test --develop --port=80 --tag=develop --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:80 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:80 -- --runtime=${{ github.head_ref }}
+        run: node index.js install ab-test --stack=ab-test --develop --port=80 --tag=develop --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:80 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:80 --runtime=${{ github.head_ref }}
 
       # Give some time for the stack to come down fully
       - run: sleep 15

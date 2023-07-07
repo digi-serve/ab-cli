@@ -1,5 +1,4 @@
 version: "3.2"
-name: $STACKNAME
 volumes:
   mysql_data:
 

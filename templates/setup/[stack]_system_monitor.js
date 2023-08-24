@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const shell = require("shelljs");
 // const async = require("async");
-const AB = require("ab-utils");
+const AB = require("@digiserve/ab-utils");
 const config = AB.config("bot_manager");
 // Don't run if bot is disabled
 if (!config.slackBot.enable) {

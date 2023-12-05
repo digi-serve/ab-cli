@@ -218,7 +218,7 @@ services:
 
   #file_processor: A service to manage uploaded files.
   file_processor:
-    image: node
+    image: docker.io/digiserve/ab-file-processor:$AB_FILE_PROCESSOR_VERSION
     environment:
       - COTE_DISCOVERY_REDIS_HOST=redis
       - MYSQL_PASSWORD

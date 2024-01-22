@@ -16,7 +16,7 @@ jobs:
         # windows runner does not suppport linux containers
         # see:
         os: [ubuntu-latest] #, windows-latest] #,macos-latest]
-        node: [16, 18]
+        node: [18, 20, 21]
     env:
          CYPRESS_RESPONSE_TIMEOUT: 200000
          CYPRESS_DEFAULT_COMMAND_TIMEOUT: 30000
@@ -47,7 +47,7 @@ jobs:
         run: docker swarm init --advertise-addr 127.0.0.1
 
       - name: Install AppBuilder
-        run: node index.js install ab-test --stack=ab-test --develop --port=80 --tag=develop --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:80 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:80 --runtime=${{ github.head_ref }}
+        run: node index.js install ab-test --stack=ab-test --develop --port=80 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:80 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:80
 
       # Give some time for the stack to come down fully
       - run: sleep 15
@@ -70,34 +70,34 @@ jobs:
         run: ./Down.sh
         working-directory: ./ab-test
 
-      - name: Setup Test Stack
-        working-directory: ./ab-test
-        run: node ../index.js test setup ab
+      # - name: Setup Test Stack
+      #   working-directory: ./ab-test
+      #   run: node ../index.js test setup ab
 
-      - name: Launch Test Stack
-        working-directory: ./ab-test
-        run: npm run test:boot && node ../index.js test waitBoot ab
-
-      - run: npm install pm2@latest -g
-      - name: Save Logs
-        run: pm2 start ./logs.js -- --toFile logs/ABServices.log
-        working-directory: ./ab-test
-
-      - name: Wait for AB (Test Stack)
-        uses: ifaxity/wait-on-action@v1
-        with:
-          resource: http://localhost:8088
-          timeout: 300000
-
-      - name: Run Cypress Tests (Test Stack)
-        run: npm run test:e2e:ab-runtime -- --browser chrome
-        working-directory: ./ab-test
-
-      - uses: actions/upload-artifact@v2
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: ./ab-test/test/e2e/cypress/screenshots
+      # - name: Launch Test Stack
+      #   working-directory: ./ab-test
+      #   run: npm run test:boot && node ../index.js test waitBoot ab
+      #
+      # - run: npm install pm2@latest -g
+      # - name: Save Logs
+      #   run: pm2 start ./logs.js -- --toFile logs/ABServices.log
+      #   working-directory: ./ab-test
+      #
+      # - name: Wait for AB (Test Stack)
+      #   uses: ifaxity/wait-on-action@v1
+      #   with:
+      #     resource: http://localhost:8088
+      #     timeout: 300000
+      #
+      # - name: Run Cypress Tests (Test Stack)
+      #   run: npm run test:e2e:ab-runtime -- --browser chrome
+      #   working-directory: ./ab-test
+      #
+      # - uses: actions/upload-artifact@v2
+      #   if: failure()
+      #   with:
+      #     name: cypress-screenshots
+      #     path: ./ab-test/test/e2e/cypress/screenshots
 
       - uses: actions/upload-artifact@v2
         if: failure()

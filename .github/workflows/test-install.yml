@@ -105,8 +105,8 @@ jobs:
           name: ABServices.log
           path: ./ab-test/logs/ABServices.log
 
-      - name: Take Down Test Stack
-        run: node ../index.js test down ab
+      # - name: Take Down Test Stack
+        # run: node ../index.js test down ab
   podman-install-test:
     name: Podman Install
     runs-on: ubuntu-latest
@@ -130,7 +130,7 @@ jobs:
         run: npm i
 
       - name: Install AppBuilder
-        run: node index.js install ab-test --stack=ab-test --develop --port=80 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:80 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:80 --platform=podman --runtime=nh/merge-runtimes
+        run: node index.js install ab-test --stack=ab-test --port=8090 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:8090 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:8090 --platform=podman --runtime=nh/merge-runtimes
 
       # Give some time for the stack to come down fully
       - run: sleep 15
@@ -142,7 +142,7 @@ jobs:
       - name: Wait for AB (Main Stack)
         uses: ifaxity/wait-on-action@v1
         with:
-          resource: http://localhost:80
+          resource: http://localhost:8090
           timeout: 300000
 
       - name: Run Cypress Tests (Main Stack)

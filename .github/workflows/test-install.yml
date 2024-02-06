@@ -105,6 +105,51 @@ jobs:
           name: ABServices.log
           path: ./ab-test/logs/ABServices.log
 
-      - name: Take Down Test Stack
-        run: node ../index.js test down ab
+      # - name: Take Down Test Stack
+        # run: node ../index.js test down ab
+  podman-install-test:
+    name: Podman Install
+    runs-on: ubuntu-latest
+    env:
+         CYPRESS_RESPONSE_TIMEOUT: 200000
+         CYPRESS_DEFAULT_COMMAND_TIMEOUT: 30000
+         CYPRESS_RETRIES: 2
+    steps:
+      - uses: gacts/install-podman@v1
+        #with:
+        #  kind: unstable # `testing` by default
+        #  qemu: true # `false` by default
+
+      - run: podman version
+      - run: podman compose --help
+
+      - name: Checkout ab-cli
+        uses: actions/checkout@v2
+
+      - name: Install npm packages
+        run: npm i
+
+      - name: Install AppBuilder
+        run: node index.js install ab-test --stack=ab-test --port=8090 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:8090 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:8090 --platform=podman
+
+      # Give some time for the stack to come down fully
+      - run: sleep 15
+
+      - name: Launch Main Stack
+        run: ./UP.sh -t -q
         working-directory: ./ab-test
+
+      - name: Wait for AB (Main Stack)
+        uses: ifaxity/wait-on-action@v1
+        with:
+          resource: http://localhost:8090
+          timeout: 300000
+
+      - name: Run Cypress Tests (Main Stack)
+        run: npm run test:e2e:ab-runtime -- --browser chrome
+        working-directory: ./ab-test
+
+      - name: Take Down Main Stack
+        run: ./Down.sh
+        working-directory: ./ab-test
+

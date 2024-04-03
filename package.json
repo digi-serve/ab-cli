@@ -15,6 +15,7 @@
       "axios": "^0.21.1",
       "chalk": "^2.4.2",
       "clear": "^0.1.0",
+      "cli-progress": "^3.12.0",
       "cross-spawn": "^6.0.5",
       "ejs": "^3.1.7",
       "envfile": "^6.18.0",

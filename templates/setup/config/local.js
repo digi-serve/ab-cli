@@ -45,6 +45,7 @@ module.exports = {
       // of your users, forcing them to log in again.     
    },
 
+   /* eslint-disable */
    <% if (!develop) { %>
    sockets: {
       /**
@@ -62,6 +63,7 @@ module.exports = {
       },
    },
    <% } %>
+   /* eslint-enable */
 
    /**
     * CAS authentication

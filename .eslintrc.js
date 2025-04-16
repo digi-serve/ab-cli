@@ -6,10 +6,15 @@ module.exports = {
    },
 
    parserOptions: {
+      sourceType: "module",
       ecmaVersion: 2020,
+      requireConfigFile: false,
+      babelOptions: {
+         presets: ["@babel/preset-env"],
+      },
    },
 
-   // "parser": "babel-eslint",
+   parser: "@babel/eslint-parser",
    extends: ["eslint:recommended", "prettier"], // extending recommended config and config derived from eslint-config-prettier
    plugins: ["prettier"], // activating esling-plugin-prettier (--fix stuff)
    rules: {

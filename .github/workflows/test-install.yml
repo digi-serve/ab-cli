@@ -115,7 +115,10 @@ jobs:
          CYPRESS_DEFAULT_COMMAND_TIMEOUT: 30000
          CYPRESS_RETRIES: 2
     steps:
-      - run: sudo apt-get update & sudo apt-get -y install podman
+      - run: sudo apt-get update & sudo apt-get -y install podman & systemctl --user enable --now podman.socket
+      # connect Docker CLI to Podman’s socket
+      - run: export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
+
 
       - run: podman version
       - run: podman compose --help

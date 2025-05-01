@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           cache: 'npm'
@@ -115,10 +115,7 @@ jobs:
          CYPRESS_DEFAULT_COMMAND_TIMEOUT: 30000
          CYPRESS_RETRIES: 2
     steps:
-      - uses: gacts/install-podman@v1
-        #with:
-        #  kind: unstable # `testing` by default
-        #  qemu: true # `false` by default
+      - run: sudo apt-get update & sudo apt-get -y install podman
 
       - run: podman version
       - run: podman compose --help

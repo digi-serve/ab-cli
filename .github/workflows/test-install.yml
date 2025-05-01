@@ -134,9 +134,8 @@ jobs:
 
       # Give some time for the stack to come down fully
       - run: sleep 15
-      # check the versions in compose files
+    # check the versions in compose files
       - run: grep version *.yml
-
       - name: Launch Main Stack
         run: ./UP.sh -t -q
         working-directory: ./ab-test

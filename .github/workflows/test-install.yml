@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           cache: 'npm'
@@ -99,7 +99,7 @@ jobs:
       #     name: cypress-screenshots
       #     path: ./ab-test/test/e2e/cypress/screenshots
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: ABServices.log
@@ -115,10 +115,10 @@ jobs:
          CYPRESS_DEFAULT_COMMAND_TIMEOUT: 30000
          CYPRESS_RETRIES: 2
     steps:
-      - uses: gacts/install-podman@v1
-        #with:
-        #  kind: unstable # `testing` by default
-        #  qemu: true # `false` by default
+      - run: sudo apt-get update & sudo apt-get -y install podman & systemctl --user enable --now podman.socket
+      # connect Docker CLI to Podman’s socket
+      - run: export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
+
 
       - run: podman version
       - run: podman compose --help
@@ -134,7 +134,6 @@ jobs:
 
       # Give some time for the stack to come down fully
       - run: sleep 15
-
       - name: Launch Main Stack
         run: ./UP.sh -t -q
         working-directory: ./ab-test

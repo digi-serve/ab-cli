@@ -1,0 +1,66 @@
+name: Bug Report Form
+description: File a bug Report
+labels: ["bug :lady_beetle:", "bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: description
+    attributes:
+      label: Short Description
+      description: Briefly describe what happened.
+    validations:
+      required: true
+  - type: dropdown
+    id: bug-severity
+    attributes:
+      label: Does the bug prevent users from working?
+      options:
+        - The bug does not prevent users from working
+        - The bug is an inconvenience but does not prevent users from working
+        - The bug prevents users from completing some tasks
+        - The bug prevents users from completing critical tasks (e.g., saving data) 
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Please tell us what you did, so we can reproduce the bug.
+      value: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: input
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: input
+    id: server
+    attributes:
+      label: What Server are you using?
+      description: Where do you see this bug?
+    validations:
+      required: false
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      placeholder: Paste Here (ctrl + v)
+    validations:
+      required: false
+  - type: textarea
+    id: other
+    attributes:
+      label: Anything else?
+      description: Add any other information that could help us fix this.
+    validations:
+      required: false

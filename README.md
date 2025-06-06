@@ -1,11 +1,11 @@
-![Tests](https://github.com/digi-serve/ab-cli/actions/workflows/test-install.yml/badge.svg)
+![Tests](https://github.com/CruGlobal/ab-cli/actions/workflows/test-install.yml/badge.svg)
 
 A command line helper for our AppBuilder development.
 
 # Installation
 
 ```sh
-$ sudo npm install -g digi-serve/ab-cli
+$ sudo npm install -g CruGlobal/ab-cli
 ```
 
 # Usage
@@ -16,7 +16,7 @@ $ sudo npm install -g digi-serve/ab-cli
 $ appbuilder install [target_directory] --develop --V1
 ```
 
-See https://digi-serve.github.io/appbuilder_docs/develop/setup/Setup.html
+See https://CruGlobal.github.io/appbuilder_docs/develop/setup/Setup.html
 
 ## Production Install
 
@@ -24,4 +24,4 @@ See https://digi-serve.github.io/appbuilder_docs/develop/setup/Setup.html
 $ appbuilder prod2021 [target_directory]
 ```
 
-See also https://github.com/digi-serve/ab-production-stack
+See also https://github.com/CruGlobal/ab-production-stack

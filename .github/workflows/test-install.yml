@@ -116,7 +116,7 @@ jobs:
          CYPRESS_RETRIES: 2
     steps:
       - run: sudo apt-get update & sudo apt-get -y install podman & systemctl --user enable --now podman.socket
-      # connect Docker CLI to Podman’s socket
+      # connect Docker CLI to Podman's socket
       - run: export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
 
 
@@ -129,6 +129,9 @@ jobs:
       - name: Install npm packages
         run: npm i
 
+      - name: Ensure clean enviroment
+        run: rm -rf ./ab-test
+
       - name: Install AppBuilder
         run: node index.js install ab-test --stack=ab-test --port=8090 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:8090 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:8090 --platform=podman
 
@@ -136,6 +139,18 @@ jobs:
       - run: sleep 15
       - name: Launch Main Stack
         run: ./UP.sh -t -q
+        working-directory: ./ab-test
+
+      - name: Check Database Logs
+        run: |
+          echo "Checking database logs..."
+          podman logs $(podman ps -q -f name=ab-test_db) | tail -n 50
+        working-directory: ./ab-test
+
+      - name: Check Tenant Setup
+        run: |
+          echo "Checking tenant setup..."
+          podman exec -i $(podman ps -q -f name=ab-test_db) mysql -uroot -proot "appbuilder-admin" -e "SELECT * FROM SITE_USER WHERE username='admin';"
         working-directory: ./ab-test
 
       - name: Wait for AB (Main Stack)

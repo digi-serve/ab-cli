@@ -47,7 +47,11 @@ jobs:
         run: docker swarm init --advertise-addr 127.0.0.1
 
       - name: Install AppBuilder
-        run: node index.js install ab-test --stack=ab-test --develop --port=80 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:80 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:80
+        env:
+          TENANT_PASSWORD: "admin123!@#"
+        run: |
+          echo "Installing AppBuilder with secure password..."
+          node index.js install ab-test --stack=ab-test --port=80 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:80 --tenant.username=admin --tenant.password=$TENANT_PASSWORD --tenant.email=admin@email.com --tenant.url=http://localhost:80 --platform=podman
 
       # Give some time for the stack to come down fully
       - run: sleep 15
@@ -133,7 +137,11 @@ jobs:
         run: rm -rf ./ab-test
 
       - name: Install AppBuilder
-        run: node index.js install ab-test --stack=ab-test --port=8090 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:8090 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:8090 --platform=podman
+        env:
+          TENANT_PASSWORD: "admin123!@#"
+        run: |
+          echo "Installing AppBuilder with secure password..."
+          node index.js install ab-test --stack=ab-test --port=80 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:80 --tenant.username=admin --tenant.password=$TENANT_PASSWORD --tenant.email=admin@email.com --tenant.url=http://localhost:80 --platform=podman
 
       # Give some time for the stack to come down fully
       - run: sleep 15
@@ -158,16 +166,26 @@ jobs:
           echo "Found containers matching 'db': $DB_CONTAINER"
           if [ -n "$DB_CONTAINER" ]; then
             echo "\nChecking tenant setup in container: $DB_CONTAINER"
-            podman exec -i $DB_CONTAINER mysql -uroot -proot "appbuilder-admin" -e "SELECT * FROM SITE_USER WHERE username='admin';"
+            podman exec -i $DB_CONTAINER mysql -uroot -proot "appbuilder-admin" -e "SELECT username, email, salt FROM SITE_USER WHERE username='admin';"
+            echo "\nChecking .env file for Cypress settings..."
+            cat .env | grep CYPRESS
           else
             echo "No database container found!"
           fi
         working-directory: ./ab-test
 
+      - name: Test Login
+        run: |
+          echo "Testing login with credentials..."
+          curl -X POST http://localhost:80/auth/login \
+            -H "Content-Type: application/json" \
+            -d '{"tenant":"admin","email":"admin@email.com","password":"admin123!@#"}'
+        working-directory: ./ab-test
+
       - name: Wait for AB (Main Stack)
         uses: ifaxity/wait-on-action@v1
         with:
-          resource: http://localhost:8090
+          resource: http://localhost:80
           timeout: 300000
 
       - name: Run Cypress Tests (Main Stack)

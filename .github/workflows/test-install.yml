@@ -151,6 +151,10 @@ jobs:
         run: |
           echo "Checking tenant setup..."
           podman exec -i $(podman ps -q -f name=ab-test_db) mysql -uroot -proot "appbuilder-admin" -e "SELECT * FROM SITE_USER WHERE username='admin';"
+          echo "Checking tenant manager logs..."
+          podman logs $(podman ps -q -f name=ab-test_tenant_manager) | tail -n 50
+          echo "Checking running services..."
+          podman ps
         working-directory: ./ab-test
 
       - name: Wait for AB (Main Stack)

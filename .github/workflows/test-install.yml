@@ -149,12 +149,19 @@ jobs:
 
       - name: Check Tenant Setup
         run: |
-          echo "Checking tenant setup..."
-          podman exec -i $(podman ps -q -f name=ab-test_db) mysql -uroot -proot "appbuilder-admin" -e "SELECT * FROM SITE_USER WHERE username='admin';"
-          echo "Checking tenant manager logs..."
-          podman logs $(podman ps -q -f name=ab-test_tenant_manager) | tail -n 50
-          echo "Checking running services..."
-          podman ps
+          echo "Listing all running containers..."
+          podman ps -a
+          echo "\nWaiting for database to be ready..."
+          sleep 90
+          echo "\nTrying to find database container..."
+          DB_CONTAINER=$(podman ps -a --filter name=db --format "{{.Names}}")
+          echo "Found containers matching 'db': $DB_CONTAINER"
+          if [ -n "$DB_CONTAINER" ]; then
+            echo "\nChecking tenant setup in container: $DB_CONTAINER"
+            podman exec -i $DB_CONTAINER mysql -uroot -proot "appbuilder-admin" -e "SELECT * FROM SITE_USER WHERE username='admin';"
+          else
+            echo "No database container found!"
+          fi
         working-directory: ./ab-test
 
       - name: Wait for AB (Main Stack)

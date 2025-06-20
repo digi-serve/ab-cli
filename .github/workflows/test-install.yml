@@ -48,7 +48,7 @@ jobs:
 
       - name: Install AppBuilder
         env:
-          TENANT_PASSWORD: "admin123!@#"
+          TENANT_PASSWORD: "admin"
         run: |
           echo "Installing AppBuilder with secure password..."
           node index.js install ab-test --stack=ab-test --port=8090 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:8090 --tenant.username=admin --tenant.password=$TENANT_PASSWORD --tenant.email=admin@email.com --tenant.url=http://localhost:8090 --platform=podman
@@ -163,7 +163,7 @@ jobs:
 
       - name: Install AppBuilder
         env:
-          TENANT_PASSWORD: "admin123!@#"
+          TENANT_PASSWORD: "admin"
         run: |
           echo "Installing AppBuilder with secure password..."
           node index.js install ab-test --stack=ab-test --port=8090 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:8090 --tenant.username=admin --tenant.password=$TENANT_PASSWORD --tenant.email=admin@email.com --tenant.url=http://localhost:8090 --platform=podman
@@ -211,7 +211,7 @@ jobs:
           echo "Testing login with credentials..."
           curl -X POST http://localhost:8090/auth/login \
             -H "Content-Type: application/json" \
-            -d '{"tenant":"admin","email":"admin@email.com","password":"admin123!@#"}'
+            -d '{"tenant":"admin","email":"admin@email.com","password":"admin"}'
         working-directory: ./ab-test
 
       - name: Run Cypress Tests (Main Stack)

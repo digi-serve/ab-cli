@@ -66,6 +66,31 @@ jobs:
           resource: http://localhost:8090
           timeout: 300000
 
+      - name: Test Login 1
+        run: |
+          curl -X POST http://localhost:8090/auth/login \
+            -H "Content-Type: application/json" \
+            -d '{"tenant":"admin","email":"admin@email.com","password":"admin"}'
+        working-directory: ./ab-test
+
+      - name: Reset Test Environment
+        run: npm run test:reset ab-test
+        working-directory: ./ab-test
+
+      - name: Reset via API
+        run: |
+          curl -X POST http://localhost:8090/test/reset \
+            -H "Content-Type: application/json" \
+            -d '{"tenant":"admin"}'
+        working-directory: ./ab-test
+
+      - name: Test Login post reset
+        run: |
+          curl -X POST http://localhost:8090/auth/login \
+            -H "Content-Type: application/json" \
+            -d '{"tenant":"admin","email":"admin@email.com","password":"admin"}'
+        working-directory: ./ab-test
+
       - name: Run Cypress Tests (Main Stack)
         run: npm run test:e2e:ab-runtime -- --browser chrome
         working-directory: ./ab-test

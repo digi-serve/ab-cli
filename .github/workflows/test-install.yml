@@ -32,7 +32,7 @@ jobs:
       #     docker ps
 
       - name: Checkout ab-cli
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -47,7 +47,11 @@ jobs:
         run: docker swarm init --advertise-addr 127.0.0.1
 
       - name: Install AppBuilder
-        run: node index.js install ab-test --stack=ab-test --develop --port=80 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:80 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:80
+        env:
+          TENANT_PASSWORD: "admin"
+        run: |
+          echo "Installing AppBuilder with secure password..."
+          node index.js install ab-test --stack=ab-test --port=8090 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:8090 --tenant.username=admin --tenant.password=$TENANT_PASSWORD --tenant.email=admin@email.com --tenant.url=http://localhost:8090 --platform=podman
 
       # Give some time for the stack to come down fully
       - run: sleep 15
@@ -59,8 +63,33 @@ jobs:
       - name: Wait for AB (Main Stack)
         uses: ifaxity/wait-on-action@v1
         with:
-          resource: http://localhost:80
+          resource: http://localhost:8090
           timeout: 300000
+
+      - name: Test Login 1
+        run: |
+          curl -X POST http://localhost:8090/auth/login \
+            -H "Content-Type: application/json" \
+            -d '{"tenant":"admin","email":"admin@email.com","password":"admin"}'
+        working-directory: ./ab-test
+
+      - name: Reset Test Environment
+        run: npm run test:reset ab-test
+        working-directory: ./ab-test
+
+      - name: Reset via API
+        run: |
+          curl -X POST http://localhost:8090/test/reset \
+            -H "Content-Type: application/json" \
+            -d '{"tenant":"admin"}'
+        working-directory: ./ab-test
+
+      - name: Test Login post reset
+        run: |
+          curl -X POST http://localhost:8090/auth/login \
+            -H "Content-Type: application/json" \
+            -d '{"tenant":"admin","email":"admin@email.com","password":"admin"}'
+        working-directory: ./ab-test
 
       - name: Run Cypress Tests (Main Stack)
         run: npm run test:e2e:ab-runtime -- --browser chrome
@@ -86,7 +115,7 @@ jobs:
       # - name: Wait for AB (Test Stack)
       #   uses: ifaxity/wait-on-action@v1
       #   with:
-      #     resource: http://localhost:8088
+      #     resource: http://localhost:809088
       #     timeout: 300000
       #
       # - name: Run Cypress Tests (Test Stack)
@@ -116,7 +145,7 @@ jobs:
          CYPRESS_RETRIES: 2
     steps:
       - run: sudo apt-get update & sudo apt-get -y install podman & systemctl --user enable --now podman.socket
-      # connect Docker CLI to Podman’s socket
+      # connect Docker CLI to Podman's socket
       - run: export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
 
 
@@ -124,13 +153,20 @@ jobs:
       - run: podman compose --help
 
       - name: Checkout ab-cli
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install npm packages
         run: npm i
 
+      - name: Ensure clean enviroment
+        run: rm -rf ./ab-test
+
       - name: Install AppBuilder
-        run: node index.js install ab-test --stack=ab-test --port=8090 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:8090 --tenant.username=admin --tenant.password=admin --tenant.email=admin@email.com --tenant.url=http://localhost:8090 --platform=podman
+        env:
+          TENANT_PASSWORD: "admin"
+        run: |
+          echo "Installing AppBuilder with secure password..."
+          node index.js install ab-test --stack=ab-test --port=8090 --tag=latest --dbExpose=true --dbPort=8888 --dbPassword=root --authType=login --relayEnabled=false --siteURL=http://localhost:8090 --tenant.username=admin --tenant.password=$TENANT_PASSWORD --tenant.email=admin@email.com --tenant.url=http://localhost:8090 --platform=podman
 
       # Give some time for the stack to come down fully
       - run: sleep 15
@@ -138,11 +174,45 @@ jobs:
         run: ./UP.sh -t -q
         working-directory: ./ab-test
 
+      - name: Check Database Logs
+        run: |
+          echo "Checking database logs..."
+          podman logs $(podman ps -q -f name=ab-test_db) | tail -n 50
+        working-directory: ./ab-test
+
+      - name: Check Tenant Setup
+        run: |
+          echo "Listing all running containers..."
+          podman ps -a
+          echo "\nWaiting for database to be ready..."
+          sleep 90
+          echo "\nTrying to find database container..."
+          DB_CONTAINER=$(podman ps -a --filter name=db --format "{{.Names}}")
+          echo "Found containers matching 'db': $DB_CONTAINER"
+          if [ -n "$DB_CONTAINER" ]; then
+            echo "\nChecking tenant setup in container: $DB_CONTAINER"
+            podman exec -i $DB_CONTAINER mysql -uroot -proot "appbuilder-admin" -e "SELECT username, email, salt FROM SITE_USER WHERE username='admin';"
+            echo "\nChecking .env file for Cypress settings..."
+            cat .env | grep CYPRESS
+          else
+            echo "No database container found!"
+          fi
+        working-directory: ./ab-test
+
+
       - name: Wait for AB (Main Stack)
         uses: ifaxity/wait-on-action@v1
         with:
           resource: http://localhost:8090
           timeout: 300000
+
+      - name: Test Login
+        run: |
+          echo "Testing login with credentials..."
+          curl -X POST http://localhost:8090/auth/login \
+            -H "Content-Type: application/json" \
+            -d '{"tenant":"admin","email":"admin@email.com","password":"admin"}'
+        working-directory: ./ab-test
 
       - name: Run Cypress Tests (Main Stack)
         run: npm run test:e2e:ab-runtime -- --browser chrome
